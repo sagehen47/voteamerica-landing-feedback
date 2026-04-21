@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 40" width="200" height="40">
+  <rect x="0" y="4" width="32" height="32" rx="6" fill="#FFFFFF"></rect>
+  <path d="M16 10L18.2 16H24L19.4 19.4L21 25L16 21.6L11 25L12.6 19.4L8 16H13.8L16 10Z" fill="#C8102E"></path>
+  <text x="42" y="26" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Arial, sans-serif" font-size="19" font-weight="500" fill="#FFFFFF">Vote<tspan fill="#FFFFFF" opacity="0.75">America</tspan></text>
+</svg>

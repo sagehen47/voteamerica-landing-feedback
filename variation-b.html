@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>VoteAmerica Plus | Variation B</title>
+<link rel="icon" href="./assets/logomark.svg"/>
+<style>
+@import url("./styles/tokens.css");
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:#FAF8F5;color:#000;-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+a{color:inherit;text-decoration:none}
+.shell{max-width:1100px;margin:0 auto;padding:0 40px}
+
+/* ── NAV ── */
+.nav{display:flex;align-items:center;gap:20px;padding:20px 40px;max-width:1100px;margin:0 auto;border-bottom:1px solid #EEECE8}
+.nav-brand{display:flex;align-items:center}
+.nav-brand img{height:22px}
+.nav-brand-plus{font-size:14px;font-weight:500;color:#C8102E;margin-left:4px}
+.nav-sp{flex:1}
+.nav-links{display:flex;gap:24px}
+.nav-links a{font-size:14px;color:#5C5A54;cursor:pointer;transition:color .15s}
+.nav-links a:hover{color:#000}
+.btn-r{background:#C8102E;color:#fff;padding:10px 20px;border-radius:6px;font-size:14px;font-weight:500;display:inline-flex;align-items:center;gap:6px;transition:background .15s;white-space:nowrap}
+.btn-r:hover{background:#9B0C22}
+.btn-r.lg{padding:15px 26px;font-size:16px}
+.btn-o{background:transparent;color:#000;border:1.5px solid #D8D5CE;padding:10px 20px;border-radius:6px;font-size:14px;font-weight:500;display:inline-flex;align-items:center;gap:6px;transition:border-color .15s}
+.btn-o:hover{border-color:#000}
+.btn-o.lg{padding:15px 26px;font-size:16px}
+
+/* ── HERO — full viewport, rotating word ── */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 380px;gap:56px;align-items:center;padding:100px 40px 80px;max-width:1100px;margin:0 auto}
+.hero-left{position:relative}
+.hero-pre{font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:#5C5A54;margin-bottom:24px}
+.hero h1{font-size:clamp(44px,6.5vw,88px);font-weight:500;line-height:1.02;letter-spacing:-.035em;color:#000;margin-bottom:0}
+.hero h1 .word-swap{display:inline-block;color:#C8102E;min-width:420px;vertical-align:bottom;overflow:visible;padding-bottom:0.1em}
+.word-out{animation:wordOut .35s forwards}
+.word-in{animation:wordIn .35s forwards}
+@keyframes wordOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-20px)}}
+@keyframes wordIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.hero-sub{font-size:19px;color:#5C5A54;max-width:560px;line-height:1.55;margin-top:28px;margin-bottom:36px}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px}
+.hero-proof{display:flex;gap:24px;flex-wrap:wrap;font-size:13px;color:#5C5A54;padding-top:20px;border-top:1px solid #EEECE8}
+.hero-proof strong{color:#000;font-weight:500}
+
+/* Hero right decoration */
+.hero-deco{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-self:center}
+.deco-card{background:#fff;border:1px solid #EEECE8;border-radius:10px;padding:20px 18px}
+.deco-card-label{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#9E9B93;font-weight:500;margin-bottom:6px}
+.deco-card-val{font-size:28px;font-weight:500;color:#C8102E;letter-spacing:-.02em;line-height:1}
+.deco-card-sub{font-size:12px;color:#9E9B93;margin-top:4px}
+
+/* ── LOGOS ── */
+.logos{padding:44px 0;background:#fff;border-top:1px solid #EEECE8;border-bottom:1px solid #EEECE8}
+.logos-lbl{text-align:center;font-size:11px;color:#9E9B93;letter-spacing:.08em;text-transform:uppercase;margin-bottom:20px}
+.logos-row{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.lpill{padding:11px 20px;border:1px solid #EEECE8;border-radius:8px;font-size:14px;font-weight:500;color:#000;background:#FAF8F5;transition:border-color .15s,background .15s}
+.lpill:hover{border-color:#C8102E;background:#fff}
+
+/* ── HOW IT WORKS — step-through ── */
+.how{padding:100px 0;background:#fff;border-bottom:1px solid #EEECE8}
+.how-layout{display:grid;grid-template-columns:1fr 1.2fr;gap:80px;align-items:start}
+.how-sticky{position:sticky;top:100px}
+.how-sticky h2{font-size:40px;font-weight:500;letter-spacing:-.02em;line-height:1.08;margin-bottom:16px}
+.how-sticky p{font-size:17px;color:#5C5A54;line-height:1.55;margin-bottom:32px}
+.how-steps{display:flex;flex-direction:column;gap:0}
+.how-item{padding:24px 0;border-top:1px solid #EEECE8;cursor:pointer;transition:padding .2s}
+.how-item:last-child{border-bottom:1px solid #EEECE8}
+.how-item.active{padding:28px 0}
+.how-item-head{display:flex;align-items:center;gap:16px}
+.how-item-n{width:32px;height:32px;border-radius:50%;background:#EEECE8;color:#5C5A54;font-size:13px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s,color .2s}
+.how-item.active .how-item-n{background:#C8102E;color:#fff}
+.how-item-title{font-size:17px;font-weight:500;color:#000}
+.how-item-body{display:none;padding:14px 0 0 48px;font-size:15px;color:#5C5A54;line-height:1.6}
+.how-item.active .how-item-body{display:block}
+/* right visual */
+.how-visual{position:sticky;top:100px;background:#FAF8F5;border:1px solid #EEECE8;border-radius:14px;padding:36px;min-height:320px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;transition:all .3s}
+.how-visual-n{font-size:120px;font-weight:500;color:#EEECE8;line-height:1;letter-spacing:-.04em;margin-bottom:12px}
+.how-visual-h{font-size:22px;font-weight:500;color:#000;letter-spacing:-.01em}
+.how-visual-p{font-size:15px;color:#5C5A54;margin-top:8px;max-width:260px}
+
+/* ── STEP GRAPHICS ── */
+.sg{background:#FAF8F5;border:1px solid #EEECE8;border-radius:12px;padding:28px;min-height:280px;display:flex;flex-direction:column;justify-content:center;transition:all .35s ease}
+.sg-code{font-family:monospace;font-size:12px;background:#1a1a2e;color:#e2e8f0;border-radius:8px;padding:16px;line-height:1.7}
+.sg-code .ck{color:#C8102E}.sg-code .cs{color:#86efac}.sg-code .ca{color:#93c5fd}
+.sg-form{background:#fff;border:1px solid #EEECE8;border-radius:8px;padding:20px}
+.sg-form-label{font-size:11px;font-weight:500;color:#5C5A54;margin-bottom:6px}
+.sg-form-input{width:100%;padding:10px 12px;border:1.5px solid #EEECE8;border-radius:6px;font-size:14px;color:#000;margin-bottom:12px;background:#FAF8F5}
+.sg-form-btn{width:100%;background:#C8102E;color:#fff;padding:11px;border-radius:6px;font-size:14px;font-weight:500;text-align:center}
+.sg-notif{background:#fff;border:1px solid #EEECE8;border-radius:10px;padding:16px;display:flex;gap:12px;align-items:flex-start;margin-bottom:10px}
+.sg-notif-icon{width:36px;height:36px;border-radius:8px;background:#FEE2E2;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px}
+.sg-notif-title{font-size:13px;font-weight:500;color:#000;margin-bottom:2px}
+.sg-notif-sub{font-size:12px;color:#5C5A54}
+.sg-badge{display:inline-block;background:#EEECE8;border-radius:20px;padding:4px 10px;font-size:11px;font-weight:500;color:#5C5A54;margin-top:8px}
+
+/* ── WHO ACCORDION ── */
+.who{padding:100px 0;border-bottom:1px solid #EEECE8;background:#000;overflow:hidden}
+.who h2{font-size:40px;font-weight:500;letter-spacing:-.02em;margin-bottom:14px;color:#fff}
+.who-sub{font-size:17px;color:rgba(255,255,255,.6);margin-bottom:48px;max-width:480px}
+.who-accord{border-top:1px solid rgba(255,255,255,.12)}
+.wa-item{border-bottom:1px solid rgba(255,255,255,.12);cursor:pointer;transition:background .2s}
+.wa-item:hover{background:rgba(255,255,255,.03)}
+.wa-item.open{background:rgba(255,255,255,.04)}
+.wa-head{display:flex;align-items:center;gap:24px;padding:28px 0;user-select:none}
+.wa-num{font-size:13px;font-weight:500;color:#C8102E;min-width:32px;flex-shrink:0}
+.wa-title{font-size:clamp(24px,3.5vw,44px);font-weight:500;color:rgba(255,255,255,.45);line-height:1.05;letter-spacing:-.02em;flex:1;transition:color .25s}
+.wa-item.open .wa-title{color:#fff}
+.wa-arrow{width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s,transform .3s}
+.wa-item.open .wa-arrow{background:#C8102E;border-color:#C8102E;transform:rotate(45deg)}
+.wa-body{display:none;padding:0 0 32px 56px}
+.wa-item.open .wa-body{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.wa-lede{font-size:17px;color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:20px}
+.wa-cta{background:#C8102E;color:#fff;padding:12px 20px;border-radius:6px;font-size:14px;font-weight:500;display:inline-flex;align-items:center;gap:6px;transition:background .15s;border:none;cursor:pointer}
+.wa-cta:hover{background:#9B0C22}
+.wa-facts{list-style:none;padding:0}
+.wa-fact{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:14px;color:rgba(255,255,255,.7);line-height:1.45}
+.wa-fact:first-child{border-top:1px solid rgba(255,255,255,.08)}
+.wa-dot{width:14px;height:14px;border-radius:50%;background:#C8102E;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+
+/* ── PRICING ── */
+.pricing{padding:100px 0;background:#fff;border-bottom:1px solid #EEECE8}
+.pricing h2{font-size:40px;font-weight:500;letter-spacing:-.02em;margin-bottom:14px}
+.pricing-sub{font-size:17px;color:#5C5A54;margin-bottom:44px;max-width:500px}
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.pcard{border-radius:14px;padding:44px;border:1px solid #EEECE8;transition:box-shadow .2s,transform .2s}
+.pcard:hover{box-shadow:0 8px 32px rgba(0,0,0,.07);transform:translateY(-2px)}
+.pcard.free{background:#FAF8F5}
+.pcard.plus{background:#000;color:#fff;border-color:#000}
+.pcard-tier{font-size:11px;letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:14px}
+.pcard.free .pcard-tier{color:#9E9B93}
+.pcard.plus .pcard-tier{color:rgba(255,255,255,.5)}
+.pcard-price{font-size:48px;font-weight:500;letter-spacing:-.03em;line-height:1;margin-bottom:8px}
+.pcard.free .pcard-price{color:#000}
+.pcard.plus .pcard-price{color:#fff}
+.pcard-note{font-size:14px;margin-bottom:28px}
+.pcard.free .pcard-note{color:#5C5A54}
+.pcard.plus .pcard-note{color:rgba(255,255,255,.55)}
+.prows{list-style:none;padding:0;margin-bottom:32px}
+.prow{display:flex;gap:10px;align-items:flex-start;padding:9px 0;font-size:14px;line-height:1.45;border-bottom:1px solid}
+.prow:first-child{border-top:1px solid}
+.pcard.free .prow{color:#2E2D2A;border-color:#EEECE8}
+.pcard.plus .prow{color:rgba(255,255,255,.8);border-color:rgba(255,255,255,.08)}
+.prow-chk{width:16px;height:16px;border-radius:50%;background:#C8102E;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.pricing-note{text-align:center;margin-top:18px;font-size:13px;color:#9E9B93}
+.btn-w{background:#fff;color:#000;padding:15px 26px;border-radius:6px;font-size:15px;font-weight:500;display:inline-flex;align-items:center;gap:6px;transition:opacity .15s}
+.btn-w:hover{opacity:.88}
+
+/* ── STATS ── */
+.stats{padding:80px 0;border-bottom:1px solid #EEECE8}
+.stats-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.stats-left h2{font-size:36px;font-weight:500;letter-spacing:-.02em;line-height:1.1;margin-bottom:14px}
+.stats-left p{font-size:17px;color:#5C5A54;line-height:1.55}
+.stats-right{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid #EEECE8;border-radius:12px;overflow:hidden}
+.stat-cell{padding:28px 24px;background:#fff}
+.stat-cell:nth-child(2),.stat-cell:nth-child(4){border-left:1px solid #EEECE8}
+.stat-cell:nth-child(3),.stat-cell:nth-child(4){border-top:1px solid #EEECE8}
+.stat-n{font-size:48px;font-weight:500;color:#C8102E;line-height:1;letter-spacing:-.035em}
+.stat-l{font-size:13px;color:#5C5A54;margin-top:8px;line-height:1.4}
+
+/* ── FAQ ── */
+.faq{padding:100px 0;border-bottom:1px solid #EEECE8}
+.faq h2{font-size:36px;font-weight:500;letter-spacing:-.02em;margin-bottom:44px}
+.faq-list{max-width:760px;border-top:1px solid #EEECE8}
+.fitem{border-bottom:1px solid #EEECE8}
+.fq{display:flex;justify-content:space-between;align-items:center;width:100%;padding:20px 0;font-size:16px;font-weight:500;color:#000;text-align:left;gap:16px;cursor:pointer;background:none}
+.fq svg{flex-shrink:0;transition:transform .2s;color:#9E9B93}
+.fitem.open .fq svg{transform:rotate(45deg);color:#C8102E}
+.fa{display:none;padding:0 0 20px;font-size:15px;color:#5C5A54;line-height:1.7;max-width:680px}
+.fitem.open .fa{display:block}
+
+/* ── FINAL CTA ── */
+.fcta{padding:100px 0;background:#C8102E;text-align:center}
+.fcta h2{font-size:clamp(36px,5vw,64px);font-weight:500;letter-spacing:-.03em;line-height:1.04;color:#fff;margin-bottom:14px}
+.fcta p{font-size:18px;color:rgba(255,255,255,.75);margin-bottom:32px}
+.fcta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.fcta-trust{margin-top:20px;font-size:12px;color:rgba(255,255,255,.55);letter-spacing:.03em}
+.btn-fcta-w{background:#fff;color:#C8102E;padding:16px 28px;border-radius:6px;font-size:16px;font-weight:500;display:inline-flex;align-items:center;gap:6px;transition:opacity .15s}
+.btn-fcta-w:hover{opacity:.9}
+.btn-fcta-o{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.4);padding:15.5px 28px;border-radius:6px;font-size:16px;font-weight:500;display:inline-flex;align-items:center;gap:6px;transition:border-color .15s}
+.btn-fcta-o:hover{border-color:#fff}
+
+/* ── FOOTER ── */
+footer{background:#000;padding:48px 0 28px}
+.ft-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:32px;padding-bottom:28px;border-bottom:1px solid rgba(255,255,255,.1)}
+.ft-brand{display:flex;align-items:center}
+.ft-brand img{height:20px;filter:brightness(0) invert(1)}
+.ft-brand-plus{font-size:14px;font-weight:500;color:#C8102E;margin-left:4px}
+.ft-cols{display:flex;gap:48px;flex-wrap:wrap}
+.ft-col h4{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.3);font-weight:500;margin-bottom:12px}
+.ft-col a{display:block;font-size:14px;color:rgba(255,255,255,.6);margin-bottom:8px;cursor:pointer}
+.ft-col a:hover{color:#fff}
+.ft-bottom{padding-top:20px;font-size:12px;color:rgba(255,255,255,.35);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+/* ── MODAL ── */
+.modal-bg{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(4px)}
+.modal-inner{background:#fff;border-radius:14px;padding:36px;max-width:520px;width:100%;position:relative;max-height:90vh;overflow-y:auto}
+.modal-close{position:absolute;top:16px;right:16px;background:none;border:none;cursor:pointer;font-size:18px;color:#9E9B93;line-height:1}
+.modal-kicker{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#C8102E;font-weight:500;margin-bottom:12px}
+.modal-inner h3{font-size:22px;font-weight:500;color:#000;margin-bottom:20px}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hero{padding:80px 24px 60px;min-height:auto}
+  .hero h1 .word-swap{min-width:auto}
+  .hero-deco{display:none}
+  .shell{padding:0 24px}
+  .hero{grid-template-columns:1fr}
+  .hero-deco{display:none}
+  .how-layout{grid-template-columns:1fr}
+  .how-sticky,.how-visual{position:static}
+  .wa-item.open .wa-body{grid-template-columns:1fr}
+  .pricing-grid{grid-template-columns:1fr}
+  .stats-inner{grid-template-columns:1fr}
+  .stats-right{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel">
+
+const Ic = {
+  Arr: () => <span style={{marginLeft:3}}>&#8594;</span>,
+  Chk: ({s=9,c='#fff'}) => <svg width={s} height={s} viewBox="0 0 16 16" fill="none" stroke={c} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 8 7 12 13 4"/></svg>,
+  Pls: ({s=18}) => <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round"><path d="M12 5v14M5 12h14"/></svg>,
+};
+
+/* ── Rotating word hero ── */
+const WORDS = ['campaigns.','nonprofits.','employers.','newsrooms.','civic groups.'];
+
+function RotatingWord() {
+  const [idx, setIdx] = React.useState(0);
+  const [phase, setPhase] = React.useState('in');
+  React.useEffect(() => {
+    const t = setInterval(() => {
+      setPhase('out');
+      setTimeout(() => {
+        setIdx(i => (i+1) % WORDS.length);
+        setPhase('in');
+      }, 350);
+    }, 2600);
+    return () => clearInterval(t);
+  }, []);
+  return <span className={'word-swap word-'+phase}>{WORDS[idx]}</span>;
+}
+
+/* ── Animated counter ── */
+function Counter({target}) {
+  const [val, setVal] = React.useState(0);
+  const ref = React.useRef();
+  React.useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        obs.disconnect();
+        const raw = target.replace(/[^0-9.]/g,'');
+        const num = parseFloat(raw);
+        const dur = 1200;
+        const start = performance.now();
+        const tick = now => {
+          const p = Math.min((now-start)/dur,1);
+          const ease = 1-Math.pow(1-p,3);
+          setVal(Math.round(num*ease));
+          if (p<1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }
+    },{threshold:0.5});
+    if (ref.current) obs.observe(ref.current);
+    return ()=>obs.disconnect();
+  },[target]);
+  const pfx = target.match(/^[^0-9]*/)?.[0]||'';
+  const sfx = target.match(/[^0-9.]+$/)?.[0]||'';
+  return <span ref={ref}>{pfx}{val}{sfx}</span>;
+}
+
+/* ── Step-through How It Works ── */
+const STEPS = [
+  {n:'01',h:'Set up in minutes',p:'Simple copy-paste onto your site. No developers needed. White-label it to match your brand in minutes.'},
+  {n:'02',h:'Your audience takes action',p:'Visitors register, verify their status, find their polling place, and opt in to election reminders — without leaving your page.'},
+  {n:'03',h:'They stay civically engaged',p:'Every person who opts in gets lifetime election reminders. Upgrade to Plus to access full contact records and sync to your CRM.'},
+];
+
+function StepGraphic({step}) {
+  if (step === 0) return (
+    <div className="sg">
+      <div style={{fontSize:11,fontWeight:500,color:'#5C5A54',letterSpacing:'.04em',textTransform:'uppercase',marginBottom:12}}>Copy this onto your site</div>
+      <div className="sg-code">
+        <span className="ck">&lt;script</span> <span className="ca">src</span>=<span className="cs">"cdn.voteamerica.org/embed/tools.js"</span> <span className="ca">async</span><span className="ck">&gt;&lt;/script&gt;</span><br/>
+        <span className="ck">&lt;div</span> <span className="ca">class</span>=<span className="cs">"voteamerica-embed"</span><br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span className="ca">data-tool</span>=<span className="cs">"register"</span><span className="ck">&gt;&lt;/div&gt;</span>
+      </div>
+      <div style={{marginTop:12,fontSize:12,color:'#9E9B93'}}>That's it. No backend needed.</div>
+    </div>
+  );
+  if (step === 1) return (
+    <div className="sg">
+      <div style={{fontSize:11,fontWeight:500,color:'#5C5A54',letterSpacing:'.04em',textTransform:'uppercase',marginBottom:14}}>Your audience sees this</div>
+      <div className="sg-form">
+        <div style={{fontSize:14,fontWeight:500,color:'#000',marginBottom:14}}>Check your voter registration</div>
+        <div className="sg-form-label">Your state</div>
+        <div className="sg-form-input" style={{color:'#9E9B93'}}>California</div>
+        <div className="sg-form-label">Email (for reminders)</div>
+        <div className="sg-form-input" style={{color:'#9E9B93'}}>maria@example.com</div>
+        <div className="sg-form-btn">Check registration →</div>
+      </div>
+    </div>
+  );
+  return (
+    <div className="sg">
+      <div style={{fontSize:11,fontWeight:500,color:'#5C5A54',letterSpacing:'.04em',textTransform:'uppercase',marginBottom:14}}>They hear from you every election</div>
+      <div className="sg-notif">
+        <div className="sg-notif-icon">🗳</div>
+        <div><div className="sg-notif-title">Primary election in 14 days</div><div className="sg-notif-sub">Your polling place: Lincoln Community Center</div></div>
+      </div>
+      <div className="sg-notif">
+        <div className="sg-notif-icon">✅</div>
+        <div><div className="sg-notif-title">You're registered in California</div><div className="sg-notif-sub">Registration confirmed via Secretary of State</div></div>
+      </div>
+      <div className="sg-badge">Reminders for life, on your brand</div>
+    </div>
+  );
+}
+
+function HowItWorks() {
+  const [active, setActive] = React.useState(0);
+  return (
+    <section id="how" className="how">
+      <div className="shell">
+        <div className="how-layout">
+          <div className="how-sticky">
+            <h2>How it works</h2>
+            <p>Free voter tools on your site in minutes. No engineers, no contract, no catch.</p>
+            <div className="how-steps">
+              {STEPS.map((s,i)=>(
+                <div key={s.n} className={'how-item '+(active===i?'active':'')} onClick={()=>setActive(i)}>
+                  <div className="how-item-head">
+                    <div className="how-item-n">{s.n}</div>
+                    <div className="how-item-title">{s.h}</div>
+                  </div>
+                  <div className="how-item-body">{s.p}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="how-visual" style={{background:'transparent',border:'none',padding:0}}>
+            <StepGraphic step={active}/>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+const ORGS = [
+  {tab:'Campaigns',h:'Your website traffic is your best untapped voter file.',p:'VoteAmerica Plus turns site visitors into registered supporters — full contact records ready for your CRM the same day.',details:['Full contact records: name, address, DOB, email, phone','Sync to NGP VAN, ActionNetwork, or any CRM','White-label to match your brand in minutes','Works alongside your existing digital program']},
+  {tab:'Nonprofits',h:'Your members want to vote. Make it easy.',p:'Research-backed tools on the platform they already use. Drive 2 to 8 percent measurable turnout lift without building anything.',details:['501(c)(3) and (c)(4) compliant. Nonpartisan by design','Lifetime election reminders for everyone who opts in','Integrates with EveryAction and Action Network','Proven turnout lift in randomized controlled trials']},
+  {tab:'Employers',h:'Civic engagement, zero engineering time.',p:'Add voter tools to your benefits portal, product, or internal comms. We handle SOC 2, HIPAA, and all compliance.',details:['Drop into any web property in minutes','Zero engineering review required','SOC 2 Type II and HIPAA certified','Free forever. No contract, no negotiation']},
+  {tab:'Media',h:'Turn every election story into action.',p:'Readers can register, verify, and plan their vote without leaving your page. Already live on major national newsrooms.',details:['Meets news-integrity and nonpartisan sourcing standards','Branded to match your publication','Optional civic engagement analytics per story','Lifetime reminders keep readers engaged']},
+];
+
+function WhoFor() {
+  const [open, setOpen] = React.useState(0);
+  const orgs = [
+    {n:'01', h:'Campaigns and parties', p:'Your website traffic is your best untapped voter file. VoteAmerica Plus turns site visitors into registered supporters — full contact records ready for your CRM the same day.', facts:['Full contact records: name, address, DOB, email, phone','Sync to NGP VAN, ActionNetwork, or any CRM','White-label to match your brand in minutes','Works alongside your existing digital program']},
+    {n:'02', h:'Nonprofits and unions', p:'Research-backed tools on the platform your members already use. Drive 2 to 8 percent measurable turnout lift without building anything.', facts:['501(c)(3) and (c)(4) compliant. Nonpartisan by design','Lifetime election reminders for everyone who opts in','Integrates with EveryAction and Action Network','Proven turnout lift in randomized controlled trials']},
+    {n:'03', h:'Corporations and employers', p:'Add civic engagement to your benefits portal, product, or internal comms. We handle SOC 2, HIPAA, and all compliance.', facts:['Drop into any web property in minutes','Zero engineering review required','SOC 2 Type II and HIPAA certified','Free forever. No contract, no negotiation']},
+    {n:'04', h:'Media and publishers', p:'Turn every election story into action. Readers can register, verify, and plan their vote without leaving your page.', facts:['Meets news-integrity and nonpartisan sourcing standards','Branded to match your publication','Optional civic engagement analytics per story','Lifetime reminders keep readers engaged']},
+  ];
+  return (
+    <section id="who" className="who">
+      <div className="shell">
+        <h2>One toolkit. Every kind of organization.</h2>
+        <p className="who-sub">The same tools serve campaigns, HR teams, newsrooms, and nonprofits. Pick your use case.</p>
+        <div className="who-accord">
+          {orgs.map((o,i)=>(
+            <div key={o.n} className={'wa-item '+(open===i?'open':'')} onClick={()=>setOpen(open===i?-1:i)}>
+              <div className="wa-head">
+                <span className="wa-num">{o.n}</span>
+                <span className="wa-title">{o.h}</span>
+                <span className="wa-arrow">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M12 5v14M5 12h14"/></svg>
+                </span>
+              </div>
+              <div className="wa-body">
+                <div>
+                  <p className="wa-lede">{o.p}</p>
+                  <button className="wa-cta">Get started <Ic.Arr/></button>
+                </div>
+                <ul className="wa-facts">
+                  {o.facts.map((f,j)=>(
+                    <li key={j} className="wa-fact"><span className="wa-dot"><Ic.Chk s={8} c="#fff"/></span>{f}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const QS = [
+  {q:'What voter tools are included?',a:'Six free tools: voter registration, registration verification, absentee ballot request, polling place locator, election reminders (SMS and email for life), and an election calendar. All work across all 50 states and DC.'},
+  {q:'Is the software really free?',a:'Yes. The tools are 100% free to embed forever. No setup fees, no contract, no per-voter pricing. Upgrade to Plus to export contact-level voter records.'},
+  {q:'How long does it take to set up?',a:'Under five minutes. Simple copy-paste. No engineering review, no onboarding call.'},
+  {q:'Can I white-label the tools?',a:'Yes. Customize colors, fonts, and branding. Your users never need to see the VoteAmerica name unless you want them to.'},
+  {q:'Is VoteAmerica partisan?',a:'No. VoteAmerica is a 501(c)(3) nonpartisan nonprofit verified by external auditors annually.'},
+  {q:'What integrations are available?',a:'Plus plans include EveryAction, Action Network, NGP VAN, DDx, TMC, Google BigQuery, and AWS Redshift. CSV export and API access also available.'},
+];
+
+function Faq() {
+  const [open, setOpen] = React.useState(null);
+  return (
+    <section id="faq" className="faq">
+      <div className="shell">
+        <h2>Frequently asked questions</h2>
+        <div className="faq-list">
+          {QS.map((x,i)=>(
+            <div key={i} className={'fitem '+(open===i?'open':'')}>
+              <button className="fq" onClick={()=>setOpen(open===i?null:i)}><span>{x.q}</span><Ic.Pls s={18}/></button>
+              <div className="fa">{x.a}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Demo Modal ── */
+function DemoModal({onClose}) {
+  React.useEffect(()=>{
+    if (!document.getElementById('va-embed-script')){const s=document.createElement('script');s.src='https://cdn.voteamerica.org/embed/tools.js';s.async=true;s.id='va-embed-script';document.head.appendChild(s);}
+    document.body.style.overflow='hidden';
+    return()=>{document.body.style.overflow=''};
+  },[]);
+  return (
+    <div className="modal-bg" onClick={onClose}>
+      <div className="modal-inner" onClick={e=>e.stopPropagation()}>
+        <button className="modal-close" onClick={onClose}>&#10005;</button>
+        <p className="modal-kicker">Live demo</p>
+        <h3>Try the voter verification tool</h3>
+        <div className="voteamerica-embed" data-subscriber="tab-for-a-cause" data-tool="verify"></div>
+      </div>
+    </div>
+  );
+}
+
+/* ── APP ── */
+function App() {
+  const [showDemo, setShowDemo] = React.useState(false);
+  return (
+    <>
+      {/* NAV */}
+      <nav className="nav">
+        <div className="nav-brand"><img src="./assets/VoteAmerica_Logo.svg" alt="VoteAmerica"/><span className="nav-brand-plus">Plus</span></div>
+        <div className="nav-links"><a href="#how">How it works</a><a href="#who">Who it's for</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a></div>
+        <div className="nav-sp"/>
+        <button className="btn-r" onClick={()=>setShowDemo(true)}>Sign up free <Ic.Arr/></button>
+      </nav>
+
+      {showDemo && <DemoModal onClose={()=>setShowDemo(false)}/>}
+
+      {/* HERO */}
+      <div className="hero">
+        <div className="hero-left">
+          <p className="hero-pre">VoteAmerica Plus</p>
+          <h1>The voter engagement<br/>platform for <RotatingWord/></h1>
+          <p className="hero-sub">Free, trusted voter tools on your site in minutes. Your audience can register, verify, and plan their vote without ever leaving your page.</p>
+          <div className="hero-ctas">
+            <button className="btn-r lg" onClick={()=>setShowDemo(true)}>Sign up free <Ic.Arr/></button>
+            <button className="btn-o lg" onClick={()=>setShowDemo(true)}>See it live <Ic.Arr/></button>
+          </div>
+          <div className="hero-proof">
+            <span><strong>Free forever.</strong> No contract</span>
+            <span><strong>Easy setup.</strong> No engineers needed</span>
+            <span><strong>50 states</strong> and DC</span>
+          </div>
+        </div>
+        <div className="hero-deco">
+          <div className="deco-card"><div className="deco-card-label">Voters reached</div><div className="deco-card-val">20M+</div><div className="deco-card-sub">since 2019</div></div>
+          <div className="deco-card"><div className="deco-card-label">Jurisdictions</div><div className="deco-card-val">51</div><div className="deco-card-sub">all covered</div></div>
+          <div className="deco-card"><div className="deco-card-label">Setup time</div><div className="deco-card-val">5 min</div><div className="deco-card-sub">no engineers</div></div>
+          <div className="deco-card"><div className="deco-card-label">Platform cost</div><div className="deco-card-val">$0</div><div className="deco-card-sub">forever</div></div>
+        </div>
+      </div>
+
+      {/* LOGOS */}
+      <div className="logos">
+        <div className="shell">
+          <div className="logos-lbl">Trusted by 500+ organizations</div>
+          <div className="logos-row">
+            {['Everytown','Gusto','Credit Karma','Change.org','GLAAD','The 19th','Patagonia','Hinge'].map(o=><div className="lpill" key={o}>{o}</div>)}
+          </div>
+        </div>
+      </div>
+
+      <HowItWorks/>
+      <WhoFor/>
+
+      {/* PRICING */}
+      <section id="pricing" className="pricing">
+        <div className="shell">
+          <h2>Simple, transparent pricing.</h2>
+          <p className="pricing-sub">The tools are free forever. Upgrade to Plus to access and export voter contact data. Change plans any time.</p>
+          <div className="pricing-grid">
+            <div className="pcard free">
+              <div className="pcard-tier">Free</div>
+              <div className="pcard-price">$0</div>
+              <div className="pcard-note">Forever. No credit card required.</div>
+              <ul className="prows">
+                {['All six voter tools, white-labeled','All 50 states and DC','Lifetime election reminders','No contract, no credit card'].map(r=>(
+                  <li key={r} className="prow"><span className="prow-chk"><Ic.Chk s={8}/></span>{r}</li>
+                ))}
+              </ul>
+              <button className="btn-r lg" style={{width:'100%',justifyContent:'center'}} onClick={()=>setShowDemo(true)}>Sign up free <Ic.Arr/></button>
+            </div>
+            <div className="pcard plus">
+              <div className="pcard-tier">Plus</div>
+              <div className="pcard-price">Custom</div>
+              <div className="pcard-note">Priced by org type and size.</div>
+              <ul className="prows">
+                {['Everything in Free','Full voter contact records and CSV export','CRM sync: EveryAction, NGP VAN, and more','Analytics dashboard and priority support'].map(r=>(
+                  <li key={r} className="prow"><span className="prow-chk"><Ic.Chk s={8}/></span>{r}</li>
+                ))}
+              </ul>
+              <button className="btn-w" style={{width:'100%',justifyContent:'center'}}>Contact sales <Ic.Arr/></button>
+            </div>
+          </div>
+          <div className="pricing-note">Upgrade or downgrade at any time. Nonprofits receive preferred pricing.</div>
+        </div>
+      </section>
+
+      {/* STATS */}
+      <section className="stats">
+        <div className="shell">
+          <div className="stats-inner">
+            <div className="stats-left">
+              <h2>Built for democracy, not for profit.</h2>
+              <p>VoteAmerica is a 501(c)(3) nonprofit. Every dollar from VoteAmerica Plus funds nonpartisan voter mobilization programs across the country.</p>
+            </div>
+            <div className="stats-right">
+              {[['20M+','Voters reached since 2019'],['51','Jurisdictions covered'],['100+','Data points per jurisdiction'],['2–8%','Measurable turnout lift']].map(([n,l])=>(
+                <div key={n} className="stat-cell">
+                  <div className="stat-n"><Counter target={n}/></div>
+                  <div className="stat-l">{l}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECURITY */}
+      <div style={{padding:'20px 0',borderTop:'1px solid #EEECE8',borderBottom:'1px solid #EEECE8',display:'flex',gap:24,justifyContent:'center',flexWrap:'wrap',fontSize:13,color:'#5C5A54'}}>
+        {['SOC 2 Type II','HIPAA certified','Pen-tested annually','Nonpartisan by design'].map(s=>(
+          <span key={s} style={{display:'flex',alignItems:'center',gap:6}}><span style={{width:6,height:6,borderRadius:'50%',background:'#1A6B3C',display:'inline-block'}}/>{s}</span>
+        ))}
+      </div>
+
+      <Faq/>
+
+      {/* FINAL CTA */}
+      <section className="fcta">
+        <div className="shell">
+          <h2>Help your audience vote.<br/>It takes five minutes.</h2>
+          <p>Free forever. One copy-paste. Nonpartisan by design.</p>
+          <div className="fcta-row">
+            <button className="btn-fcta-w" onClick={()=>setShowDemo(true)}>Sign up free <Ic.Arr/></button>
+            <button className="btn-fcta-o">Contact sales <Ic.Arr/></button>
+          </div>
+          <div className="fcta-trust">501(c)(3) nonprofit · SOC 2 · HIPAA · All 50 states and DC</div>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer>
+        <div className="shell">
+          <div className="ft-top">
+            <div className="ft-brand"><img src="./assets/VoteAmerica_Logo.svg" alt="VoteAmerica"/><span className="ft-brand-plus">Plus</span></div>
+            <div className="ft-cols">
+              <div className="ft-col"><h4>Product</h4><a>Voter tools</a><a>Data and CRM</a><a>Integrations</a></div>
+              <div className="ft-col"><h4>Resources</h4><a>Docs</a><a>API</a><a>Status</a></div>
+              <div className="ft-col"><h4>Company</h4><a>About</a><a>Impact</a><a>Privacy</a></div>
+            </div>
+          </div>
+          <div className="ft-bottom"><span>&#169; 2026 VoteAmerica, LLC</span><span>SOC 2 · HIPAA · Nonpartisan</span></div>
+        </div>
+      </footer>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>VoteAmerica Plus | Help your audience vote</title>
+<link rel="icon" href="./assets/logomark.svg"/>
+<style>
+@import url("./styles/tokens.css");
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--va-cream);color:var(--va-gray-800);line-height:1.6;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+a{color:inherit;text-decoration:none}
+.shell{max-width:1100px;margin:0 auto;padding:0 32px}
+
+/* ── BUTTONS ── */
+.btn-r{background:var(--va-red);color:#fff;padding:10px 20px;border-radius:6px;font-size:14px;font-weight:500;transition:background .15s;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn-r:hover{background:var(--va-red-dark)}
+.btn-r.lg{padding:15px 26px;font-size:16px}
+.btn-o{background:transparent;color:#000;border:1.5px solid var(--va-gray-200);padding:10px 20px;border-radius:6px;font-size:14px;font-weight:500;transition:border-color .15s,background .15s;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn-o:hover{border-color:#000}
+.btn-o.lg{padding:15px 26px;font-size:16px}
+.btn-w{background:#fff;color:#000;padding:15px 26px;border-radius:6px;font-size:16px;font-weight:500;display:inline-flex;align-items:center;gap:6px;transition:opacity .15s}
+.btn-w:hover{opacity:.88}
+
+/* ── NAV ── */
+.nav{display:flex;align-items:center;gap:20px;padding:18px 32px;max-width:1100px;margin:0 auto}
+.nav-brand{display:flex;align-items:center;gap:0}
+.nav-brand img{height:22px}
+.nav-brand-plus{font-size:14px;font-weight:500;color:var(--va-red);margin-left:4px;letter-spacing:-.01em}
+.nav-links{display:flex;gap:24px;margin-left:16px}
+.nav-links a{font-size:14px;color:var(--va-gray-600);cursor:pointer}
+.nav-links a:hover{color:#000}
+.nav-sp{flex:1}
+.nav-in{font-size:14px;color:var(--va-gray-600);cursor:pointer}
+.nav-in:hover{color:#000}
+
+/* ── HERO ── cream bg ── */
+.hero{padding:72px 0 88px;background:var(--va-cream)}
+.hero-grid{max-width:720px}
+.hero h1{font-size:clamp(36px,4.5vw,58px);font-weight:500;line-height:1.04;letter-spacing:-.03em;color:#000;margin-bottom:18px}
+.hero h1 em{color:var(--va-red);font-style:normal}
+.hero-sub{font-size:18px;color:var(--va-gray-600);line-height:1.55;margin-bottom:32px;max-width:460px}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px}
+.hero-proof{display:flex;gap:24px;flex-wrap:wrap;font-size:13px;color:var(--va-gray-600);padding-top:20px;border-top:1px solid var(--va-gray-100)}
+.hero-proof strong{color:#000;font-weight:500}
+
+/* Embed widget */
+.ew{position:relative}
+.float-code{position:absolute;top:-14px;left:-16px;z-index:2;background:#000;color:#fff;padding:8px 12px;border-radius:6px;font-family:var(--font-mono);font-size:11px;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.ecard{background:#fff;border:1px solid var(--va-gray-100);border-radius:14px;padding:26px;width:100%}
+.echrome{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;margin-bottom:18px;border-bottom:1px solid var(--va-gray-100);font-size:11px;color:var(--va-gray-600);letter-spacing:.04em;text-transform:uppercase;font-weight:500}
+.echrome small{font-size:10px;color:var(--va-gray-400);text-transform:none;font-weight:400;letter-spacing:0}
+.esteps{display:flex;align-items:center;gap:6px;margin-bottom:20px}
+.ed{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;flex-shrink:0}
+.ed.on{background:var(--va-red);color:#fff}.ed.off{background:var(--va-gray-100);color:var(--va-gray-600)}
+.el{flex:1;height:2px;background:var(--va-gray-100)}.el.on{background:var(--va-red)}
+.ecard h3{font-size:21px;font-weight:500;color:#000;margin-bottom:6px;letter-spacing:-.01em}
+.esub{font-size:14px;color:var(--va-gray-600);margin-bottom:18px}
+.ecard label{display:block;font-size:12px;font-weight:500;color:#000;margin-bottom:5px}
+.ecard select,.ecard input[type=email]{width:100%;padding:12px;border:1.5px solid var(--va-gray-200);border-radius:6px;font-size:15px;font-family:inherit;color:var(--va-gray-800);background:#fff;margin-bottom:14px}
+.ecard select:focus,.ecard input:focus{border-color:var(--va-red);outline:none}
+.eb{width:100%;background:var(--va-red);color:#fff;padding:13px;border-radius:6px;font-size:15px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:6px;transition:background .15s}
+.eb:hover{background:var(--va-red-dark)}.eb:disabled{opacity:.4;pointer-events:none}
+.eback{width:100%;padding:8px;font-size:13px;color:var(--va-gray-600);margin-top:8px}
+.eok{width:44px;height:44px;border-radius:50%;background:#E6F3EC;color:var(--va-green);display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+
+/* ── LOGOS ── white bg ── */
+.logos{padding:44px 0;background:#fff;border-top:1px solid var(--va-gray-100);border-bottom:1px solid var(--va-gray-100)}
+.logos-lbl{text-align:center;font-size:12px;color:var(--va-gray-600);letter-spacing:.06em;text-transform:uppercase;font-weight:500;margin-bottom:22px}
+.logos-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.lpill{padding:12px 22px;background:var(--va-cream);border:1px solid var(--va-gray-100);border-radius:8px;font-size:14px;font-weight:500;color:#000;letter-spacing:-.01em;white-space:nowrap}
+
+/* ── TOOLS ── cream bg ── */
+.tools-sec{padding:96px 0;background:var(--va-cream)}
+.tools-head{max-width:600px;margin-bottom:36px}
+.tools-head h2{font-size:40px;font-weight:500;line-height:1.1;letter-spacing:-.02em;color:#000;margin-bottom:14px}
+.tools-head p{font-size:17px;color:var(--va-gray-600);line-height:1.55}
+.tools-list-simple{list-style:none;padding:0;columns:2;column-gap:32px;margin-top:4px}
+.tools-list-simple li{font-size:17px;color:var(--va-gray-800);padding:10px 0;border-bottom:1px solid var(--va-gray-100);break-inside:avoid}
+
+/* ── HOW IT WORKS ── white bg ── */
+.how-sec{padding:80px 0;background:#fff;border-top:1px solid var(--va-gray-100);border-bottom:1px solid var(--va-gray-100)}
+.how-title{font-size:36px;font-weight:500;letter-spacing:-.02em;color:#000;margin-bottom:40px;line-height:1.1}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-left:1px solid var(--va-gray-100)}
+.how-step{padding:32px 28px;border-right:1px solid var(--va-gray-100)}
+.how-big-n{font-size:72px;font-weight:500;color:var(--va-gray-100);line-height:1;letter-spacing:-.04em;margin-bottom:20px}
+.how-step h3{font-size:20px;font-weight:500;color:#000;margin-bottom:8px;letter-spacing:-.01em}
+.how-step p{font-size:15px;color:var(--va-gray-600);line-height:1.55}
+
+/* ── WHO interactive tabs ── */
+.who-sec{padding:96px 0;background:#000}
+.who-sec h2{font-size:40px;font-weight:500;line-height:1.1;letter-spacing:-.02em;color:#fff;margin-bottom:14px}
+.who-sec .who-sub{font-size:17px;color:rgba(255,255,255,.65);line-height:1.55;margin-bottom:36px;max-width:560px}
+.who-tabs{display:flex;gap:0;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,.12);margin-bottom:40px}
+.who-tab{background:transparent;color:rgba(255,255,255,.5);font-size:14px;font-weight:500;padding:12px 20px;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s;white-space:nowrap;cursor:pointer}
+.who-tab:hover{color:rgba(255,255,255,.85)}
+.who-tab.active{color:#fff;border-bottom-color:var(--va-red)}
+.who-panel{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.who-panel-left h3{font-size:26px;font-weight:500;color:#fff;margin-bottom:12px;letter-spacing:-.01em}
+.who-panel-left p{font-size:16px;color:rgba(255,255,255,.7);line-height:1.6}
+.who-panel-right{list-style:none;padding:0;margin:0}
+.who-panel-right li{display:flex;gap:10px;align-items:flex-start;font-size:15px;color:rgba(255,255,255,.8);padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08);line-height:1.5}
+.who-panel-right li:first-child{border-top:1px solid rgba(255,255,255,.08)}
+.wdot{width:16px;height:16px;border-radius:50%;background:var(--va-red);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+
+/* ── PRICING ── white bg ── */
+.pricing-sec{padding:96px 0;background:#fff;border-top:1px solid var(--va-gray-100)}
+.pricing-header{max-width:600px;margin-bottom:48px}
+.pricing-header h2{font-size:40px;font-weight:500;line-height:1.1;letter-spacing:-.02em;color:#000;margin-bottom:14px}
+.pricing-header p{font-size:17px;color:var(--va-gray-600);line-height:1.55}
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.pcard{border-radius:12px;padding:40px;border:1px solid var(--va-gray-100)}
+.pcard.free{background:var(--va-cream)}
+.pcard.plus{background:#000;color:#fff}
+.pcard-label{font-size:12px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;margin-bottom:14px}
+.pcard.free .pcard-label{color:var(--va-gray-600)}
+.pcard.plus .pcard-label{color:rgba(255,255,255,.55)}
+.pcard-price{font-size:40px;font-weight:500;line-height:1;letter-spacing:-.03em;margin-bottom:6px}
+.pcard.free .pcard-price{color:#000}
+.pcard.plus .pcard-price{color:#fff}
+.pcard-sub{font-size:14px;margin-bottom:28px}
+.pcard.free .pcard-sub{color:var(--va-gray-600)}
+.pcard.plus .pcard-sub{color:rgba(255,255,255,.6)}
+.pcard-divider{height:1px;margin-bottom:24px}
+.pcard.free .pcard-divider{background:var(--va-gray-200)}
+.pcard.plus .pcard-divider{background:rgba(255,255,255,.12)}
+.prows{list-style:none;padding:0;margin-bottom:32px}
+.prow{display:flex;gap:10px;padding:9px 0;font-size:14px;align-items:flex-start;line-height:1.45}
+.prow:not(:last-child){border-bottom:1px solid}
+.pcard.free .prow{color:var(--va-gray-800);border-color:var(--va-gray-100)}
+.pcard.plus .prow{color:rgba(255,255,255,.85);border-color:rgba(255,255,255,.08)}
+.prow-check{width:16px;height:16px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.pcard.free .prow-check{background:var(--va-red)}
+.pcard.plus .prow-check{background:var(--va-red)}
+.pricing-note{text-align:center;font-size:14px;color:var(--va-gray-600);margin-top:20px}
+
+/* ── WHY ── red accent, large stats ── */
+.why-sec{padding:96px 0;background:var(--va-cream);border-top:1px solid var(--va-gray-100)}
+.why-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.why-left h2{font-size:40px;font-weight:500;line-height:1.1;letter-spacing:-.02em;color:#000;margin-bottom:16px}
+.why-left p{font-size:17px;color:var(--va-gray-600);line-height:1.55;margin-bottom:28px}
+.why-stats{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--va-gray-200)}
+.wstat{display:flex;align-items:baseline;gap:24px;padding:20px 0;border-bottom:1px solid var(--va-gray-200)}
+.wstat-n{font-size:44px;font-weight:500;color:var(--va-red);line-height:1;letter-spacing:-.03em;flex-shrink:0;min-width:90px}
+.wstat-l{font-size:15px;color:var(--va-gray-600);line-height:1.5}
+
+/* ── SECURITY ── */
+.sec-strip{background:#fff;border-top:1px solid var(--va-gray-100);border-bottom:1px solid var(--va-gray-100);padding:20px 0}
+.sec-inner{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;font-size:13px;color:var(--va-gray-600)}
+.sec-inner span{display:flex;align-items:center;gap:7px}
+.sdot{width:6px;height:6px;border-radius:50%;background:var(--va-green);flex-shrink:0}
+
+/* ── FAQ ── cream ── */
+.faq-sec{padding:96px 0;background:var(--va-cream)}
+.faq-sec h2{font-size:36px;font-weight:500;letter-spacing:-.02em;color:#000;margin-bottom:40px}
+.faq-list{max-width:760px;border-top:1px solid var(--va-gray-200)}
+.fitem{border-bottom:1px solid var(--va-gray-100)}
+.fq{display:flex;justify-content:space-between;align-items:center;width:100%;padding:20px 0;font-size:16px;font-weight:500;color:#000;text-align:left;gap:16px}
+.fq svg{flex-shrink:0;transition:transform .2s;color:var(--va-gray-400)}
+.fitem.open .fq svg{transform:rotate(45deg);color:var(--va-red)}
+.fa{display:none;padding:0 0 20px;font-size:15px;color:var(--va-gray-600);line-height:1.65;max-width:680px}
+.fitem.open .fa{display:block}
+
+/* ── FINAL CTA ── black ── */
+.fcta{background:#000;padding:100px 0;text-align:center}
+.fcta h2{font-size:clamp(32px,4vw,52px);font-weight:500;letter-spacing:-.025em;line-height:1.05;color:#fff;margin-bottom:14px}
+.fcta p{font-size:18px;color:rgba(255,255,255,.65);margin-bottom:32px}
+.fcta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.fcta-trust{margin-top:22px;font-size:13px;color:rgba(255,255,255,.4)}
+
+/* ── FOOTER ── */
+footer{background:#000;border-top:1px solid rgba(255,255,255,.08);padding:48px 0 28px}
+.ft-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:32px;padding-bottom:28px;border-bottom:1px solid rgba(255,255,255,.1)}
+.ft-brand{display:flex;align-items:center;gap:0}
+.ft-brand img{height:22px;filter:brightness(0) invert(1)}
+.ft-brand-plus{font-size:14px;font-weight:500;color:var(--va-red);margin-left:4px}
+.ft-cols{display:flex;gap:48px;flex-wrap:wrap}
+.ft-col h4{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);font-weight:500;margin-bottom:12px}
+.ft-col a{display:block;font-size:14px;color:rgba(255,255,255,.7);margin-bottom:8px;cursor:pointer}
+.ft-col a:hover{color:#fff}
+.ft-bottom{padding-top:20px;font-size:12px;color:rgba(255,255,255,.35);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+/* ── TWEAKS ── */
+.tp{position:fixed;bottom:24px;right:24px;z-index:9999;background:#fff;border:1px solid var(--va-gray-200);border-radius:10px;padding:18px;width:260px;box-shadow:0 8px 32px rgba(0,0,0,.15);display:none;font-size:13px}
+.tp.open{display:block}
+.tp h4{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--va-red);margin:0 0 14px;font-weight:500}
+.trow2{margin-bottom:12px}
+.trow2 label{display:block;font-size:12px;color:var(--va-gray-600);font-weight:500;margin-bottom:5px}
+.trow2 input{width:100%;padding:7px 10px;border:1px solid var(--va-gray-200);border-radius:6px;font-size:13px}
+
+/* ── MOBILE ── */
+@media(max-width:800px){
+  .nav-links,.nav-in{display:none}
+  .hero{padding:44px 0 60px}
+  .hero h1{font-size:36px}
+  .hero-proof{flex-direction:column;gap:10px}
+  .float-code{display:none}
+  .tools-inner{grid-template-columns:1fr}
+  .tools-sticky{position:static}
+  .who-grid{grid-template-columns:1fr}
+  .who-panel{grid-template-columns:1fr}
+  .pricing-grid{grid-template-columns:1fr}
+  .why-inner{grid-template-columns:1fr;gap:40px}
+  .how-grid{grid-template-columns:1fr}
+  .logos-row{gap:8px}
+  .fcta{padding:72px 0}
+}
+@media(max-width:480px){
+  .shell{padding:0 16px}
+  .nav{padding:14px 16px}
+  .hero-ctas{flex-direction:column}
+  .hero-ctas button{width:100%}
+  .pcard{padding:28px 24px}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel">
+
+const TWEAKS_DEFAULTS = /*EDITMODE-BEGIN*/{ "ctaCopy": "Sign up free" } /*EDITMODE-END*/;
+
+const Ic = {
+  Arr: () => <span style={{ marginLeft: 2 }}>→</span>,
+  Chk: ({ s = 9, c = 'currentColor' }) => <svg width={s} height={s} viewBox="0 0 16 16" fill="none" stroke={c} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 8 7 12 13 4" /></svg>,
+  Pls: ({ s = 18 }) => <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>,
+  Code: ({ s = 13 }) => <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" /></svg>
+};
+
+function Nav({ cta }) {
+  return (
+    <nav className="nav">
+      <div className="nav-brand">
+        <img src="./assets/VoteAmerica_Logo.svg" alt="VoteAmerica" />
+        <span className="nav-brand-plus">Plus</span>
+      </div>
+      <div className="nav-links">
+        <a href="#tools">Tools</a>
+        <a href="#who">Who it's for</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+        <a href="https://docs.voteamerica.org">Docs</a>
+      </div>
+      <div className="nav-sp" />
+      <span className="nav-in">Sign in</span>
+      <button className="btn-r">{cta} <Ic.Arr /></button>
+    </nav>);
+
+}
+
+function EmbedDemo() {
+  const [step, setStep] = React.useState(0);
+  const [st, setSt] = React.useState('');
+  const states = ['CA', 'TX', 'NY', 'FL', 'PA', 'OH', 'GA', 'MI', 'NC', 'AZ', 'WI', 'VA', 'WA', 'MA', 'IL', 'CO'];
+  return (
+    <div className="ew">
+      <div className="float-code"><Ic.Code />&nbsp;&lt;script src="voteamerica.org/embed.js"&gt;</div>
+      <div className="ecard">
+        <div className="echrome"><span>yoursite.com</span><small>powered by VoteAmerica Plus</small></div>
+        <div className="esteps">
+          {[0, 1, 2].map((i) => <React.Fragment key={i}>
+            <div className={'ed ' + (step >= i ? 'on' : 'off')}>{step > i ? <Ic.Chk s={9} c="#fff" /> : i + 1}</div>
+            {i < 2 && <div className={'el ' + (step > i ? 'on' : '')} />}
+          </React.Fragment>)}
+        </div>
+        {step === 0 && <>
+          <h3>Check your voter registration</h3>
+          <p className="esub">30 seconds. No login required.</p>
+          <label>Your state</label>
+          <select value={st} onChange={(e) => setSt(e.target.value)}>
+            <option value="">Select…</option>
+            {states.map((s) => <option key={s}>{s}</option>)}
+          </select>
+          <button className="eb" disabled={!st} onClick={() => st && setStep(1)}>Check registration <Ic.Arr /></button>
+        </>}
+        {step === 1 && <>
+          <h3>Stay in the loop</h3>
+          <p className="esub">Get reminders for every election you're eligible for.</p>
+          <label>Email</label>
+          <input type="email" placeholder="you@example.com" />
+          <button className="eb" onClick={() => setStep(2)}>Opt in <Ic.Arr /></button>
+          <button className="eback" onClick={() => setStep(0)}>← Back</button>
+        </>}
+        {step === 2 && <>
+          <div className="eok"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="4 12 10 18 20 6" /></svg></div>
+          <h3>You're registered in {st}.</h3>
+          <p className="esub">We'll remind you about every upcoming election.</p>
+          <button className="eb" onClick={() => {setStep(0);setSt('');}}>↻ Reset demo</button>
+        </>}
+      </div>
+    </div>);
+
+}
+
+function HowItWorks() {
+  const steps = [
+    {n:'01', h:'Set up in minutes', p:'Simple copy-paste. No developers needed.'},
+    {n:'02', h:'Audience takes action', p:'Register, verify, and plan — without leaving your site.'},
+    {n:'03', h:'They stay engaged', p:'Lifetime election reminders. Full contact records in your CRM.'},
+  ];
+  return (
+    <section className="how-sec">
+      <div className="shell">
+        <h2 className="how-title">How it works</h2>
+        <div className="how-grid">
+          {steps.map(s=>(
+            <div className="how-step" key={s.n}>
+              <div className="how-big-n">{s.n}</div>
+              <h3>{s.h}</h3>
+              <p>{s.p}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Logos() {
+  const orgs = ['Everytown', 'Gusto', 'Credit Karma', 'Change.org', 'GLAAD', 'The 19th', 'Patagonia', 'Hinge'];
+  return (
+    <section className="logos">
+      <div className="shell">
+        <div className="logos-lbl">Trusted by 500+ organizations</div>
+        <div className="logos-row">{orgs.map((o) => <div className="lpill" key={o}>{o}</div>)}</div>
+      </div>
+    </section>);
+
+}
+
+function WhoFor() {
+  const [active, setActive] = React.useState(0);
+  const orgs = [
+  { h: 'Campaigns and parties', p: 'Your website traffic is your best untapped voter file. VoteAmerica Plus turns site visitors into registered supporters with full contact records ready for your CRM.', details: ['Full contact records: name, address, DOB, email, phone', 'Sync to NGP VAN, ActionNetwork, or any CRM', 'White-label to match your brand in minutes', 'Works alongside your existing digital program'] },
+  { h: 'Nonprofits and unions', p: 'Your members want to vote. Make it easy on the platform they already use. Research-backed tools drive 2 to 8 percent measurable turnout lift.', details: ['501(c)(3) and (c)(4) compliant. Nonpartisan by design', 'Election reminders for your audience, for life', 'Integrates with EveryAction and Action Network', 'Proven turnout lift in randomized controlled trials'] },
+  { h: 'Corporations and employers', p: 'Add civic engagement to your benefits portal or internal comms. No engineering required. We handle SOC 2, HIPAA, and all compliance.', details: ['Drop into any web page or internal tool', 'Zero engineering time required', 'SOC 2 Type II and HIPAA certified', 'Free forever. No contract, no negotiation'] },
+  { h: 'Media and publishers', p: 'Turn every election story into action. Readers can register, verify, and plan their vote without ever leaving your page.', details: ['Meets news-integrity and nonpartisan sourcing standards', 'Branded to match your publication', 'Already live on major national newsrooms', 'Optional civic engagement analytics per story'] }];
+
+  const cur = orgs[active];
+  return (
+    <section className="who-sec" id="who">
+      <div className="shell">
+        <h2>One toolkit. Every kind of organization.</h2>
+        <p className="who-sub">Whether you run a campaign, an HR team, or a newsroom, the same tools serve your audience and your mission.</p>
+        <div className="who-tabs">
+          {orgs.map((o, i) =>
+          <button key={o.h} className={'who-tab ' + (active === i ? 'active' : '')} onClick={() => setActive(i)}>{o.h}</button>
+          )}
+        </div>
+        <div className="who-panel">
+          <div className="who-panel-left">
+            <h3>{cur.h}</h3>
+            <p>{cur.p}</p>
+          </div>
+          <ul className="who-panel-right">
+            {cur.details.map((d, i) =>
+            <li key={i}><span className="wdot"><Ic.Chk s={8} c="#fff" /></span>{d}</li>
+            )}
+          </ul>
+        </div>
+      </div>
+    </section>);
+
+}
+
+function Pricing() {
+  const freeRows = [
+  'All six voter tools, white-labeled',
+  'All 50 states and DC',
+  'Lifetime election reminders for your audience',
+  'No contract, no credit card'];
+
+  const plusRows = [
+  'Everything in Free',
+  'Full voter contact records and CSV export',
+  'CRM sync: EveryAction, NGP VAN, and more',
+  'Analytics dashboard and priority support'];
+
+  return (
+    <section className="pricing-sec" id="pricing">
+      <div className="shell">
+        <div className="pricing-header">
+          <h2>Simple, transparent pricing.</h2>
+          <p>The tools are free, forever. Easily upgrade without changing the implementation to access and export voter contact data. </p>
+        </div>
+        <div className="pricing-grid">
+          <div className="pcard free">
+            <div className="pcard-label">Free</div>
+            <div className="pcard-price">$0</div>
+            <div className="pcard-sub">Forever. No credit card required.</div>
+            <div className="pcard-divider" />
+            <ul className="prows">
+              {freeRows.map((r) =>
+              <li className="prow" key={r}>
+                  <span className="prow-check"><Ic.Chk s={8} c="#fff" /></span>{r}
+                </li>
+              )}
+            </ul>
+            <button className="btn-r lg" style={{ width: '100%', justifyContent: 'center' }}>Sign up free <Ic.Arr /></button>
+          </div>
+          <div className="pcard plus">
+            <div className="pcard-label">Plus</div>
+            <div className="pcard-price">Custom</div>
+            <div className="pcard-sub">Priced by org type and size.</div>
+            <div className="pcard-divider" />
+            <ul className="prows">
+              {plusRows.map((r) =>
+              <li className="prow" key={r}>
+                  <span className="prow-check"><Ic.Chk s={8} c="#fff" /></span>{r}
+                </li>
+              )}
+            </ul>
+            <button className="btn-w" style={{ width: '100%', justifyContent: 'center' }}>Contact sales <Ic.Arr /></button>
+          </div>
+        </div>
+        <div className="pricing-note">Upgrade at any time. Nonprofit organizations receive preferred pricing.</div>
+      </div>
+    </section>);
+
+}
+
+function WhyVA() {
+  return (
+    <section className="why-sec">
+      <div className="shell">
+        <div className="why-inner">
+          <div className="why-left">
+            <h2>Built for democracy, not for profit.</h2>
+            <p>VoteAmerica is a 501(c)(3) nonprofit. Every dollar from VoteAmerica Plus funds nonpartisan voter registration and mobilization programs across the country.</p>
+          </div>
+          <div className="why-stats">
+            {[
+            ['20M+', 'Voters reached across all programs since 2019'],
+            ['51', 'Jurisdictions covered. Every state and DC.'],
+            ['100+', 'Data points maintained per jurisdiction, continuously'],
+            ['2–8%', 'Measurable turnout increase in randomized controlled trials']].
+            map(([n, l]) =>
+            <div className="wstat" key={n}>
+                <div className="wstat-n">{n}</div>
+                <div className="wstat-l">{l}</div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>);
+
+}
+
+function Security() {
+  return (
+    <div className="sec-strip">
+      <div className="sec-inner">
+        {['SOC 2 Type II', 'HIPAA certified', 'Pen-tested annually', 'Nonpartisan by design'].map((s) =>
+        <span key={s}><span className="sdot" />{s}</span>
+        )}
+      </div>
+    </div>);
+
+}
+
+function Faq() {
+  const [open, setOpen] = React.useState(0);
+  const qs = [
+  { q: 'Is the software really free?', a: 'Yes. The voter tools are 100% free to embed on your site, forever. No setup fees, no contract, no per-voter pricing. If you want to export contact-level voter records, you can upgrade to a Plus plan. Otherwise you never pay.' },
+  { q: 'How long does it take to set up?', a: 'You can sign up and embed your first tool in under five minutes. It\u2019s as simple as pasting a YouTube embed. No engineering review, no onboarding call.' },
+  { q: 'Can I white-label the tools?', a: 'Yes. You can customize colors, fonts, and branding to match your site. Your users never need to see the VoteAmerica name unless you want them to.' },
+  { q: 'What data do the tools capture?', a: 'Full individual records for everyone who opts in: first and last name, address, date of birth, email, phone, and opt-in status. Accessing that data requires a Plus subscription.' },
+  { q: 'Is VoteAmerica partisan?', a: 'No. VoteAmerica is a 501(c)(3) nonpartisan nonprofit. The tools register and mobilize voters of every party and background. This is verified by external auditors annually.' },
+  { q: 'What integrations are available?', a: 'Plus plans include code-free integrations with EveryAction, Action Network, NGP VAN, DDx, TMC, Google BigQuery, and AWS Redshift. You can also export CSV at any time or build against our API.' }];
+
+  return (
+    <section className="faq-sec" id="faq">
+      <div className="shell">
+        <h2>Frequently asked questions</h2>
+        <div className="faq-list">
+          {qs.map((x, i) =>
+          <div key={i} className={'fitem ' + (open === i ? 'open' : '')}>
+              <button className="fq" onClick={() => setOpen(open === i ? -1 : i)}>
+                <span>{x.q}</span><Ic.Pls s={18} />
+              </button>
+              <div className="fa">{x.a}</div>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>);
+
+}
+
+function FinalCta({ cta }) {
+  return (
+    <section className="fcta">
+      <div className="shell">
+        <h2>Help your audience vote.<br />It takes five minutes.</h2>
+        <p>Free forever. One line of code. Nonpartisan by design.</p>
+        <div className="fcta-row">
+          <button className="btn-w">{cta} <Ic.Arr /></button>
+          <button className="btn-r lg">Contact sales <Ic.Arr /></button>
+        </div>
+        <div className="fcta-trust">501(c)(3) nonprofit · SOC 2 · HIPAA · All 50 states and DC</div>
+      </div>
+    </section>);
+
+}
+
+function Footer() {
+  return (
+    <footer>
+      <div className="shell">
+        <div className="ft-top">
+          <div className="ft-brand">
+            <img src="./assets/VoteAmerica_Logo.svg" alt="VoteAmerica" />
+            <span className="ft-brand-plus">Plus</span>
+          </div>
+          <div className="ft-cols">
+            <div className="ft-col"><h4>Product</h4><a>Voter tools</a><a>Data and CRM</a><a>Integrations</a></div>
+            <div className="ft-col"><h4>Resources</h4><a href="https://docs.voteamerica.org">Docs</a><a>API reference</a><a>Status</a></div>
+            <div className="ft-col"><h4>Company</h4><a>About VoteAmerica</a><a>Impact reports</a><a>Privacy</a><a>Terms</a></div>
+          </div>
+        </div>
+        <div className="ft-bottom">
+          <span>© 2026 VoteAmerica, LLC</span>
+          <span>SOC 2 · HIPAA · Nonpartisan</span>
+        </div>
+      </div>
+    </footer>);
+
+}
+
+
+function LiveDemoModal({onClose}) {
+  React.useEffect(() => {
+    if (!document.getElementById('va-embed-script')) {
+      const s = document.createElement('script');
+      s.src = 'https://cdn.voteamerica.org/embed/tools.js';
+      s.async = true;
+      s.id = 'va-embed-script';
+      document.head.appendChild(s);
+    }
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = ''; };
+  }, []);
+  return (
+    <div onClick={onClose} style={{position:'fixed',inset:0,zIndex:10000,background:'rgba(0,0,0,.65)',display:'flex',alignItems:'center',justifyContent:'center',padding:24}}>
+      <div onClick={e=>e.stopPropagation()} style={{background:'#fff',borderRadius:14,padding:32,maxWidth:520,width:'100%',position:'relative',maxHeight:'90vh',overflowY:'auto'}}>
+        <button onClick={onClose} style={{position:'absolute',top:16,right:16,background:'none',border:'none',cursor:'pointer',fontSize:20,color:'#5C5A54',lineHeight:1}}>&#x2715;</button>
+        <p style={{fontSize:12,fontWeight:500,letterSpacing:'.05em',textTransform:'uppercase',color:'#C8102E',marginBottom:12}}>Live demo</p>
+        <h3 style={{fontSize:22,fontWeight:500,color:'#000',marginBottom:20,letterSpacing:'-.01em'}}>Try the voter verification tool</h3>
+        <div className="voteamerica-embed" data-subscriber="tab-for-a-cause" data-tool="verify"></div>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [tweaks, setTweaks] = React.useState(TWEAKS_DEFAULTS);
+  const [tweaksOpen, setTweaksOpen] = React.useState(false);
+  const [tweaksOn, setTweaksOn] = React.useState(false);
+  const [showDemo, setShowDemo] = React.useState(false);
+
+  React.useEffect(() => {
+    const h = (e) => {
+      if (!e.data) return;
+      if (e.data.type === '__activate_edit_mode') setTweaksOn(true);
+      if (e.data.type === '__deactivate_edit_mode') {setTweaksOn(false);setTweaksOpen(false);}
+    };
+    window.addEventListener('message', h);
+    try {window.parent.postMessage({ type: '__edit_mode_available' }, '*');} catch (_) {}
+    return () => window.removeEventListener('message', h);
+  }, []);
+
+  const upd = (p) => setTweaks((prev) => {const n = { ...prev, ...p };try {window.parent.postMessage({ type: '__edit_mode_set_keys', edits: p }, '*');} catch (_) {}return n;});
+
+  return <>
+    <Nav cta={tweaks.ctaCopy} />
+    <section className="hero">
+      <div className="shell">
+        <div className="hero-grid">
+          <div>
+            <h1>Give your audience every reason to vote. <em>We make it easy.</em></h1>
+            <p className="hero-sub">VoteAmerica Plus puts free, trusted voter tools on your site in minutes. Your audience can quickly register, verify, and find their polling place. </p>
+            <div className="hero-ctas">
+              <button className="btn-r lg">{tweaks.ctaCopy} <Ic.Arr /></button>
+              <button className="btn-o lg" onClick={()=>setShowDemo(true)}>See a live demo</button>
+            </div>
+            <div className="hero-proof">
+              <span><strong>Free forever.</strong> No contract</span>
+              <span><strong>Easy setup.</strong> No engineers needed</span>
+              <span><strong>50 states</strong> and DC</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <Logos />
+    <HowItWorks />
+    <WhoFor />
+    <Pricing />
+    <WhyVA />
+    <Security />
+    <Faq />
+    <FinalCta cta={tweaks.ctaCopy} />
+    <Footer />
+
+    {tweaksOn && <>
+      <div className={'tp ' + (tweaksOpen ? 'open' : '')}>
+        <h4>Tweaks</h4>
+        <div className="trow2"><label>CTA copy</label><input value={tweaks.ctaCopy} onChange={(e) => upd({ ctaCopy: e.target.value })} /></div>
+      </div>
+      <button onClick={() => setTweaksOpen((v) => !v)} style={{ position: 'fixed', bottom: tweaksOpen ? 'auto' : 24, right: 24, top: tweaksOpen ? 24 : 'auto', zIndex: 10000, padding: '8px 14px', borderRadius: 6, background: '#000', color: '#fff', fontSize: 12, fontWeight: 500, fontFamily: 'var(--font-sans)', border: 'none', cursor: 'pointer' }}>{tweaksOpen ? '✕' : 'Tweaks'}</button>
+    </>}
+  </>;
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

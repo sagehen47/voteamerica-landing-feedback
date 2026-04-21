@@ -1,0 +1,132 @@
+/* VoteAmerica — Colors & Type foundation
+   Source: uploads/voteamerica_design_system.html
+   ------------------------------------------------------------------ */
+
+:root {
+  /* ── BRAND COLORS ─────────────────────────────────────────────── */
+  --va-red:        #C8102E;  /* Primary — CTAs, stats, emphasis     */
+  --va-red-dark:   #9B0C22;  /* Hover state for primary red         */
+  --va-red-light:  #F5E6E9;  /* Red tint — badges, error bg         */
+
+  --va-navy:       #000000;  /* Black — replaces navy per brand     */
+  --va-navy-mid:   #222222;  /* Dark hover                          */
+
+  --va-cream:      #FAF8F5;  /* Page background, hero surface       */
+  --va-white:      #FFFFFF;
+
+  /* ── NEUTRALS ─────────────────────────────────────────────────── */
+  --va-gray-50:    #F7F6F3;
+  --va-gray-100:   #EEECE8;
+  --va-gray-200:   #D8D5CE;
+  --va-gray-400:   #9E9B93;
+  --va-gray-600:   #5C5A54;
+  --va-gray-800:   #2E2D2A;
+
+  /* ── SEMANTIC ─────────────────────────────────────────────────── */
+  --va-green:        #1A6B3C;  /* Success, verified */
+  --va-green-light:  #E6F3EC;
+  --va-info-bg:      #EBF1FA;
+  --va-info-border:  #185FA5;
+  --va-info-fg:      #0C447C;
+  --va-warn-bg:      #FEF6E6;
+  --va-warn-border:  #BA7517;
+  --va-warn-fg:      #633806;
+
+  /* Semantic aliases */
+  --fg-1: var(--va-gray-800);       /* Primary body text */
+  --fg-2: var(--va-gray-600);       /* Secondary text (AA on white) */
+  /* NOTE: gray-400 fails WCAG AA (~2.9:1) on white — never use for text.
+     Only use for dividers, icons on dark bg, or decorative elements. */
+  --fg-muted: var(--va-gray-600);   /* Metadata / helper / placeholder */
+  --fg-heading: var(--va-navy);
+  --fg-accent: var(--va-red);
+  --fg-link: var(--va-red);
+  --fg-success: var(--va-green);
+
+  --bg-page: var(--va-cream);
+  --bg-surface: var(--va-white);
+  --bg-muted: var(--va-gray-50);
+  --bg-dark: var(--va-navy);
+
+  --border-1: var(--va-gray-100);
+  --border-2: var(--va-gray-200);
+
+  /* ── TYPE ─────────────────────────────────────────────────────── */
+  /* System stack — brand uses system sans only, weights 400 & 500  */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo,
+               Consolas, "Liberation Mono", monospace;
+
+  --fw-regular: 400;
+  --fw-medium:  500;
+
+  /* Type scale */
+  --fs-display: 36px;
+  --fs-h1:      28px;
+  --fs-h2:      22px;
+  --fs-h3:      18px;
+  --fs-lead:    18px;
+  --fs-body:    16px;
+  --fs-small:   13px;
+  --fs-label:   11px;
+  --fs-stat:    40px;
+  --fs-link:    15px;
+
+  --lh-tight:   1.1;
+  --lh-heading: 1.2;
+  --lh-body:    1.7;
+  --lh-loose:   1.6;
+
+  /* ── RADII ────────────────────────────────────────────────────── */
+  --radius-button: 6px;
+  --radius-input:  6px;
+  --radius-alert:  8px;
+  --radius-card:   10px;
+  --radius-pill:   20px;
+
+  /* ── SPACING (4px grid) ───────────────────────────────────────── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* ── ELEVATION ────────────────────────────────────────────────── */
+  /* The brand avoids shadows. Use borders + a single focus ring.   */
+  --focus-ring: 0 0 0 3px rgba(200, 16, 46, 0.10);
+}
+
+/* ── SEMANTIC ELEMENT STYLES ─────────────────────────────────────── */
+body {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--fg-1);
+  background: var(--bg-page);
+}
+
+h1, h2, h3, h4 { color: var(--fg-heading); font-weight: var(--fw-medium); }
+h1 { font-size: var(--fs-h1); line-height: var(--lh-heading); }
+h2 { font-size: var(--fs-h2); line-height: var(--lh-heading); }
+h3 { font-size: var(--fs-h3); line-height: var(--lh-heading); }
+
+.display { font-size: var(--fs-display); line-height: var(--lh-tight); font-weight: var(--fw-medium); color: var(--fg-heading); }
+.lead    { font-size: var(--fs-lead); color: var(--fg-2); line-height: var(--lh-loose); }
+.small   { font-size: var(--fs-small); color: var(--fg-2); line-height: 1.5; }
+/* .label / eyebrow — DEPRECATED. Do not use small all-caps section labels.
+   Sections should lead with their heading directly.
+   Also: do not use em dashes (—). Use periods, commas, or colons instead. */
+/* .label   { font-size: var(--fs-label); font-weight: var(--fw-medium); letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg-2); } */
+.stat    { font-size: var(--fs-stat); font-weight: var(--fw-medium); color: var(--fg-accent); line-height: 1; }
+
+a, .link { color: var(--fg-link); font-weight: var(--fw-medium); text-decoration: underline; text-underline-offset: 3px; }
+
+code, pre, .mono { font-family: var(--font-mono); font-size: 13px; }
+
+hr { border: 0; height: 1px; background: var(--border-1); }
