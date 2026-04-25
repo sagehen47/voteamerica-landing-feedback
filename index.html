@@ -7,16 +7,23 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #FAF8F5; color: #1a1a1a; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 40px 20px; }
-  .container { max-width: 600px; width: 100%; }
+  .container { max-width: 620px; width: 100%; }
   .logo { height: 24px; margin-bottom: 48px; }
   h1 { font-size: 28px; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 8px; }
   p { font-size: 15px; color: #5C5A54; margin-bottom: 40px; }
-  .cards { display: flex; flex-direction: column; gap: 12px; }
-  .card { display: flex; align-items: center; justify-content: space-between; background: #fff; border: 1.5px solid #EEECE8; border-radius: 10px; padding: 20px 24px; text-decoration: none; color: inherit; transition: border-color 0.15s, box-shadow 0.15s; }
-  .card:hover { border-color: #C8102E; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
-  .card-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #C8102E; margin-bottom: 4px; }
-  .card-title { font-size: 16px; font-weight: 500; }
-  .arrow { font-size: 20px; color: #C8102E; }
+
+  .featured-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #fff; background: #C8102E; display: inline-block; padding: 4px 10px; border-radius: 4px; margin-bottom: 12px; }
+  .card-featured { display: flex; align-items: center; justify-content: space-between; background: #fff; border: 2px solid #C8102E; border-radius: 10px; padding: 22px 24px; text-decoration: none; color: inherit; transition: box-shadow 0.15s; margin-bottom: 24px; }
+  .card-featured:hover { box-shadow: 0 4px 20px rgba(200,16,46,0.15); }
+
+  .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #9E9B93; margin-bottom: 12px; }
+  .cards { display: flex; flex-direction: column; gap: 10px; }
+  .card { display: flex; align-items: center; justify-content: space-between; background: #fff; border: 1.5px solid #EEECE8; border-radius: 10px; padding: 18px 24px; text-decoration: none; color: inherit; transition: border-color 0.15s; }
+  .card:hover { border-color: #C8102E; }
+
+  .card-variation { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #C8102E; margin-bottom: 3px; }
+  .card-title { font-size: 15px; font-weight: 500; }
+  .arrow { font-size: 18px; color: #C8102E; }
 </style>
 </head>
 <body>
@@ -24,24 +31,35 @@
   <img src="./assets/logo.svg" alt="VoteAmerica" class="logo"/>
   <h1>Landing Page Variations</h1>
   <p>Please review each variation below and share your feedback.</p>
+
+  <div class="featured-label">Latest</div>
+  <a href="./variation-v6.html" class="card-featured">
+    <div>
+      <div class="card-variation">Variation V6</div>
+      <div class="card-title">Landing Page — Version 6</div>
+    </div>
+    <span class="arrow">→</span>
+  </a>
+
+  <div class="section-label">Previous variations</div>
   <div class="cards">
     <a href="./variation-a.html" class="card">
       <div>
-        <div class="card-label">Variation A</div>
+        <div class="card-variation">Variation A</div>
         <div class="card-title">Landing Page — Option A</div>
       </div>
       <span class="arrow">→</span>
     </a>
     <a href="./variation-b.html" class="card">
       <div>
-        <div class="card-label">Variation B</div>
+        <div class="card-variation">Variation B</div>
         <div class="card-title">Landing Page — Option B</div>
       </div>
       <span class="arrow">→</span>
     </a>
     <a href="./variation-c.html" class="card">
       <div>
-        <div class="card-label">Variation C</div>
+        <div class="card-variation">Variation C</div>
         <div class="card-title">Landing Page — v4</div>
       </div>
       <span class="arrow">→</span>
