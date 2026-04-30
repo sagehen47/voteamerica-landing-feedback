@@ -1,0 +1,787 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>VoteAmerica Plus</title>
+<link rel="icon" href="./assets/logomark.svg"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        va: { red: '#C8102E', 'red-dark': '#9B0C22', cream: '#FAF8F5', green: '#1A6B3C' },
+        neutral: { 50:'#F7F6F3', 100:'#EEECE8', 200:'#D8D5CE', 400:'#9E9B93', 600:'#5C5A54', 800:'#2E2D2A' }
+      },
+      fontFamily: { sans: ['-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Helvetica Neue','Arial','sans-serif'] },
+    }
+  }
+}
+</script>
+<style>
+* { scrollbar-width: none; }
+*::-webkit-scrollbar { display: none; }
+@keyframes wordOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-16px)}}
+@keyframes wordIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.word-out{animation:wordOut .3s forwards}
+.word-in{animation:wordIn .3s forwards}
+@keyframes bounce-arrow{0%,100%{transform:rotate(45deg) translateY(0)}50%{transform:rotate(45deg) translateY(5px)}}
+.bounce-arrow{animation:bounce-arrow 1.5s infinite}
+@keyframes logoFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.logo-animate{animation:logoFadeUp 0.55s cubic-bezier(0.22,1,0.36,1) both}
+</style>
+<script src="https://simplecommenter.com/js/comments.min.js?id=sc_c3f61dbc4c667b21" defer></script>
+</head>
+<body class="bg-va-cream text-neutral-800 antialiased">
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel">
+const Arr = () => <span className="ml-1">&#8594;</span>;
+const ChkIcon = ({s=9,c='#fff'}) => <svg width={s} height={s} viewBox="0 0 16 16" fill="none" stroke={c} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 8 7 12 13 4"/></svg>;
+const PlusIcon = ({s=18}) => <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round"><path d="M12 5v14M5 12h14"/></svg>;
+
+/* ── Nav: sticky + frosted glass on scroll ── */
+function Nav({onCta}) {
+  const [scrolled, setScrolled] = React.useState(false);
+  React.useEffect(() => {
+    const h = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', h);
+    return () => window.removeEventListener('scroll', h);
+  }, []);
+  return (
+    <nav className={`fixed top-0 left-0 right-0 z-50 flex items-center gap-3 px-4 md:px-24 py-3 md:py-4 transition-all duration-300 ${scrolled ? 'bg-va-cream/90 backdrop-blur-xl border-b border-neutral-100' : ''}`}>
+      <div className="flex items-center">
+        <img src="./assets/VoteAmerica_Logo.svg" alt="VoteAmerica" className="h-7"/>
+        <span className="text-base font-medium text-va-red ml-1.5">Plus</span>
+      </div>
+      <div className="hidden md:flex gap-6 ml-4">
+        {['How it works','Who it\'s for','Pricing','FAQ'].map(l => (
+          <a key={l} href={'#'+l.toLowerCase().replace(/[^a-z]/g,'-')} className="text-[13px] text-neutral-600 hover:text-black transition-colors cursor-pointer">{l}</a>
+        ))}
+      </div>
+      <div className="flex-1"/>
+      <button onClick={onCta} className="bg-va-red text-white px-3 py-2 md:px-5 md:py-2.5 rounded-md text-xs md:text-[13px] font-medium hover:bg-va-red-dark transition-colors flex items-center gap-1">Sign up free <Arr/></button>
+    </nav>
+  );
+}
+
+/* ── Rotating word ── */
+const WORDS = ['campaigns.','nonprofits.','employers.','newsrooms.','civic groups.'];
+function RotatingWord() {
+  const [idx, setIdx] = React.useState(0);
+  const [phase, setPhase] = React.useState('in');
+  React.useEffect(() => {
+    const t = setInterval(() => {
+      setPhase('out');
+      setTimeout(() => { setIdx(i => (i+1) % WORDS.length); setPhase('in'); }, 300);
+    }, 2600);
+    return () => clearInterval(t);
+  }, []);
+  return <span className={`inline-block text-va-red min-w-[200px] md:min-w-[400px] text-left word-${phase}`} style={{verticalAlign:'bottom',overflow:'visible',paddingBottom:'0.1em'}}>{WORDS[idx]}</span>;
+}
+
+/* ── Phone Mockup ── */
+function PhoneMockup({screen, large}) {
+  const w = large ? 180 : 148;
+  const h = large ? 360 : 296;
+  const r = large ? 28 : 22;
+  return (
+    <div className="relative" style={{width:w, height:h}}>
+      {/* Shell */}
+      <div className="absolute inset-0 rounded-[28px] bg-neutral-900 shadow-2xl" style={{borderRadius:r}}>
+        {/* Screen bezel */}
+        <div className="absolute inset-[3px] rounded-[25px] bg-white overflow-hidden" style={{borderRadius:r-3}}>
+          {/* Status bar */}
+          <div className="flex justify-between items-center px-4 pt-2 pb-1 bg-white">
+            <span className="text-[8px] font-semibold text-black">9:41</span>
+            <div className="flex gap-1 items-center">
+              <div className="flex gap-0.5">{[3,4,5].map(i=><div key={i} className="w-0.5 bg-black rounded-sm" style={{height:i}}/>)}</div>
+              <svg width="8" height="6" viewBox="0 0 10 8" fill="none"><path d="M5 1.5C6.8 1.5 8.4 2.3 9.5 3.5L8.2 4.8C7.4 3.9 6.3 3.3 5 3.3C3.7 3.3 2.6 3.9 1.8 4.8L0.5 3.5C1.6 2.3 3.2 1.5 5 1.5Z" fill="black"/><circle cx="5" cy="7" r="1" fill="black"/></svg>
+              <svg width="10" height="6" viewBox="0 0 12 8"><rect x="0" y="1" width="10" height="6" rx="1" stroke="black" strokeWidth="1" fill="none"/><rect x="1" y="2" width="7" height="4" rx="0.5" fill="black"/><rect x="10.5" y="2.5" width="1" height="3" rx="0.5" fill="black"/></svg>
+            </div>
+          </div>
+          {/* Notch */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-4 bg-neutral-900 rounded-b-xl"/>
+          {/* Screen content */}
+          {screen === 'register' && (
+            <div className="px-3 pt-3">
+              <div className="text-[9px] font-bold text-black mb-1">Register to Vote</div>
+              <div className="text-[7px] text-neutral-500 mb-2">Takes about 2 minutes</div>
+              {[['First name','Maria'],['Last name','Gonzalez'],['Date of birth','04 / 12 / 1988']].map(([l,v])=>(
+                <div key={l} className="mb-1.5">
+                  <div className="text-[6px] text-neutral-500 mb-0.5">{l}</div>
+                  <div className="bg-neutral-50 border border-neutral-200 rounded px-1.5 py-1 text-[7px] text-neutral-700">{v}</div>
+                </div>
+              ))}
+              <div className="mt-2 w-full bg-va-red rounded py-1.5 text-center text-[7px] font-semibold text-white">Continue →</div>
+              <div className="mt-2 flex items-center gap-1.5">
+                <div className="w-3 h-3 rounded-full bg-green-500 flex items-center justify-center"><svg width="6" height="6" viewBox="0 0 8 8" fill="none"><polyline points="1.5 4 3 5.5 6.5 2" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg></div>
+                <span className="text-[6px] text-green-700">Registered in California</span>
+              </div>
+            </div>
+          )}
+          {screen === 'verify' && (
+            <div className="px-3 pt-3">
+              <div className="text-[10px] font-bold text-black mb-0.5">Check Your Registration</div>
+              <div className="text-[7px] text-neutral-500 mb-3">Verify your status in seconds</div>
+              <div className="bg-green-50 border border-green-200 rounded-lg px-2 py-2 mb-2">
+                <div className="flex items-center gap-1.5 mb-1">
+                  <div className="w-4 h-4 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><polyline points="1.5 4 3 5.5 6.5 2" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg></div>
+                  <span className="text-[8px] font-semibold text-green-800">Active &amp; Registered</span>
+                </div>
+                <div className="text-[6.5px] text-green-700">Los Angeles County, CA</div>
+                <div className="text-[6.5px] text-green-600 mt-0.5">Last updated: March 2026</div>
+              </div>
+              <div className="bg-neutral-50 rounded-lg px-2 py-2 mb-2">
+                <div className="text-[7px] font-medium text-black mb-1">Your polling place</div>
+                <div className="text-[6.5px] text-neutral-600">Lincoln Community Center</div>
+                <div className="text-[6.5px] text-neutral-500">3501 W. Adams Blvd, LA</div>
+              </div>
+              <div className="w-full bg-va-red rounded py-1.5 text-center text-[7px] font-semibold text-white">Set election reminders →</div>
+            </div>
+          )}
+          {screen === 'remind' && (
+            <div className="px-3 pt-3">
+              <div className="text-[9px] font-bold text-black mb-2">Election Reminders</div>
+              {[{icon:'🗳️',t:'Primary Election',s:'June 3 — 14 days away',c:'bg-red-50 border-red-100'},{icon:'📍',t:'Your polling place',s:'Lincoln Community Center',c:'bg-blue-50 border-blue-100'},{icon:'✅',t:'Registration confirmed',s:'Active in California',c:'bg-green-50 border-green-100'}].map((x,i)=>(
+                <div key={i} className={`flex gap-1.5 items-start ${x.c} border rounded-lg px-2 py-1.5 mb-1.5`}>
+                  <span className="text-[10px]">{x.icon}</span>
+                  <div>
+                    <div className="text-[7px] font-semibold text-black">{x.t}</div>
+                    <div className="text-[6px] text-neutral-500">{x.s}</div>
+                  </div>
+                </div>
+              ))}
+              <div className="mt-1 w-full bg-va-red rounded py-1.5 text-center text-[7px] font-semibold text-white">Remind me every election →</div>
+            </div>
+          )}
+        </div>
+        {/* Side button */}
+        <div className="absolute right-[-2px] top-16 w-[3px] h-8 bg-neutral-700 rounded-l-sm"/>
+        <div className="absolute left-[-2px] top-12 w-[3px] h-6 bg-neutral-700 rounded-r-sm"/>
+        <div className="absolute left-[-2px] top-20 w-[3px] h-6 bg-neutral-700 rounded-r-sm"/>
+      </div>
+    </div>
+  );
+}
+
+/* ── Hero ── */
+function Hero({onCta}) {
+  return (
+    <section className="min-h-screen grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-8 lg:gap-16 items-center max-w-[1100px] mx-auto px-5 md:px-8 pt-20 md:pt-28 pb-12 md:pb-20">
+      <div className="text-center lg:text-left">
+        <h1 className="text-[clamp(32px,6vw,80px)] font-medium leading-[1.05] tracking-[-0.03em] text-black mb-5 md:mb-7">
+          The voter engagement platform for <RotatingWord/>
+        </h1>
+        <p className="text-base md:text-lg text-neutral-600 max-w-[520px] leading-relaxed mb-6 md:mb-8 mx-auto lg:mx-0">Free, trusted voter tools on your site in minutes. Your audience can register, verify, and plan their vote without ever leaving your page.</p>
+        <div className="flex gap-3 flex-wrap mb-7 justify-center lg:justify-start">
+          <button onClick={onCta} className="bg-va-red text-white px-7 py-3.5 rounded-md text-base font-medium hover:bg-va-red-dark transition-colors flex items-center gap-1.5">Sign up free <Arr/></button>
+        </div>
+        <div className="flex gap-4 flex-wrap text-[12px] md:text-[13px] text-neutral-600 pt-4 md:pt-5 border-t border-neutral-100 justify-center lg:justify-start">
+          <span><strong className="text-black font-medium">Free forever.</strong> No contract</span>
+          <span><strong className="text-black font-medium">Easy setup.</strong> No engineers needed</span>
+          <span><strong className="text-black font-medium">50 states</strong> and DC</span>
+        </div>
+        {/* Mobile scroll hint */}
+        <div className="flex flex-col items-center mt-8 lg:hidden text-neutral-400">
+          <span className="text-[11px] uppercase tracking-widest mb-2">Scroll to explore</span>
+          <svg width="16" height="24" viewBox="0 0 16 24" fill="none" className="animate-bounce">
+            <rect x="1" y="1" width="14" height="22" rx="7" stroke="currentColor" strokeWidth="1.5"/>
+            <rect x="6.5" y="5" width="3" height="6" rx="1.5" fill="currentColor"/>
+          </svg>
+        </div>
+      </div>
+      {/* Desktop: 3-phone scene */}
+      <div className="hidden lg:flex items-end justify-center gap-0 relative h-[480px] select-none">
+        {/* Left phone — tilted left */}
+        <div className="relative flex-shrink-0" style={{transform:'perspective(900px) rotateY(18deg) rotateX(2deg) translateX(24px)',zIndex:1,opacity:0.92}}>
+          <PhoneMockup screen="register"/>
+        </div>
+        {/* Center phone — straight */}
+        <div className="relative flex-shrink-0" style={{transform:'perspective(900px) rotateY(0deg) translateY(-24px)',zIndex:3}}>
+          <PhoneMockup screen="verify" large/>
+        </div>
+        {/* Right phone — tilted right */}
+        <div className="relative flex-shrink-0" style={{transform:'perspective(900px) rotateY(-18deg) rotateX(2deg) translateX(-24px)',zIndex:1,opacity:0.92}}>
+          <PhoneMockup screen="remind"/>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Logos ── */
+function Logos() {
+  const orgs = ['Everytown','Gusto','Credit Karma','Change.org','GLAAD','The 19th','Patagonia','Hinge'];
+  const ref = React.useRef();
+  const [visible, setVisible] = React.useState(false);
+  React.useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, {threshold: 0.2});
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+  return (
+    <div className="py-10 bg-white border-y border-neutral-100" ref={ref}>
+      <div className="max-w-[1100px] mx-auto px-4 md:px-16">
+        <div className="text-center text-[11px] text-neutral-400 uppercase tracking-widest font-medium mb-5">Trusted by 500+ organizations</div>
+        <div className="flex justify-center gap-2 flex-wrap">
+          {orgs.map((o, i) => (
+            <div key={o}
+              className={`px-5 py-2.5 bg-va-cream border border-neutral-100 rounded-lg text-sm font-medium text-black hover:border-va-red transition-colors logo-animate`}
+              style={{opacity: visible ? 1 : 0, animationDelay: `${i * 60}ms`, animationPlayState: visible ? 'running' : 'paused'}}
+            >{o}</div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── How It Works (B style: clickable steps + graphics) ── */
+const STEPS = [
+  {n:'01',h:'Set up in minutes',p:'Copy and paste onto your site, or drop an easy link into your communications (text, email, etc.). White-label it to match your brand.'},
+  {n:'02',h:'Your audience takes action',p:'Visitors register, verify their status, find their polling place, and opt in to election reminders without leaving your page.'},
+  {n:'03',h:'See your data',p:'A live dashboard shows registrations, tool usage, and opt-in rates as they happen. Export or sync to your CRM in one click.'},
+  {n:'04',h:'They stay civically engaged',p:'Every person who opts in gets lifetime election reminders. Upgrade to access full contact records and sync to your CRM.'},
+];
+
+function StepGraphic({step}) {
+  if (step === 0) return (
+    <div className="bg-va-cream border border-neutral-100 rounded-xl p-7">
+      <div className="text-[11px] uppercase tracking-wider text-neutral-600 font-medium mb-3">Copy this onto your site</div>
+      <div className="bg-[#1a1a2e] text-[#e2e8f0] rounded-lg p-4 font-mono text-xs leading-relaxed">
+        <span className="text-va-red">&lt;script</span> <span className="text-blue-300">src</span>=<span className="text-green-300">"cdn.voteamerica.org/embed/tools.js"</span><span className="text-va-red">&gt;&lt;/script&gt;</span><br/>
+        <span className="text-va-red">&lt;div</span> <span className="text-blue-300">class</span>=<span className="text-green-300">"voteamerica-embed"</span><br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-blue-300">data-tool</span>=<span className="text-green-300">"register"</span><span className="text-va-red">&gt;&lt;/div&gt;</span>
+      </div>
+      <div className="mt-3 text-xs text-neutral-400">No backend needed.</div>
+    </div>
+  );
+  if (step === 1) return (
+    <div className="bg-va-cream border border-neutral-100 rounded-xl p-7">
+      <div className="text-[11px] uppercase tracking-wider text-neutral-600 font-medium mb-3">Your audience sees this</div>
+      <div className="bg-white border border-neutral-100 rounded-lg p-5">
+        <div className="text-sm font-medium text-black mb-3">Check your voter registration</div>
+        <div className="text-[11px] font-medium text-neutral-600 mb-1">Your state</div>
+        <div className="w-full p-2.5 border border-neutral-100 rounded-md text-sm text-neutral-400 mb-3 bg-va-cream">California</div>
+        <div className="text-[11px] font-medium text-neutral-600 mb-1">Email</div>
+        <div className="w-full p-2.5 border border-neutral-100 rounded-md text-sm text-neutral-400 mb-3 bg-va-cream">maria@example.com</div>
+        <div className="w-full bg-va-red text-white py-2.5 rounded-md text-sm font-medium text-center">Check registration &#8594;</div>
+      </div>
+    </div>
+  );
+  if (step === 2) return (
+    <div className="bg-va-cream border border-neutral-100 rounded-xl p-5 md:p-7">
+      <div className="text-[11px] uppercase tracking-wider text-neutral-600 font-medium mb-3">Free vs. Paid data views</div>
+      <div className="grid grid-cols-2 gap-3">
+        {/* Free side */}
+        <div className="bg-white border border-neutral-100 rounded-xl overflow-hidden">
+          <div className="px-3 py-2 bg-neutral-50 border-b border-neutral-100 flex items-center justify-between">
+            <span className="text-[10px] font-medium text-black">Free</span>
+            <span className="text-[9px] text-neutral-400">Basic</span>
+          </div>
+          <div className="grid grid-cols-2 divide-x divide-neutral-100 border-b border-neutral-100">
+            {[['Registrations','1,284'],['Opt-ins','876']].map(([l,v]) => (
+              <div key={l} className="p-2">
+                <div className="text-[8px] text-neutral-400 mb-0.5">{l}</div>
+                <div className="text-[15px] font-medium text-va-red leading-none">{v}</div>
+              </div>
+            ))}
+          </div>
+          <div className="px-3 py-2">
+            <div className="text-[8px] text-neutral-400 mb-1.5">Weekly totals</div>
+            <div className="flex items-end gap-0.5 h-8">
+              {[40,65,50,80,70,90,75].map((h,i) => (
+                <div key={i} className="flex-1 rounded-sm bg-va-red/15 relative overflow-hidden">
+                  <div className="absolute bottom-0 left-0 right-0 bg-va-red/60 rounded-sm" style={{height:`${h}%`}}/>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="px-3 py-2 border-t border-neutral-100">
+            <div className="text-[8px] text-neutral-400 italic">No contact details</div>
+          </div>
+        </div>
+        {/* Paid side */}
+        <div className="bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-sm">
+          <div className="px-3 py-2 bg-black border-b border-neutral-800 flex items-center justify-between">
+            <span className="text-[10px] font-medium text-white">Paid</span>
+            <span className="text-[9px] text-white/50">Full data</span>
+          </div>
+          <div className="grid grid-cols-2 divide-x divide-neutral-100 border-b border-neutral-100">
+            {[['Registrations','1,284'],['Opt-ins','876']].map(([l,v]) => (
+              <div key={l} className="p-2">
+                <div className="text-[8px] text-neutral-400 mb-0.5">{l}</div>
+                <div className="text-[15px] font-medium text-va-red leading-none">{v}</div>
+              </div>
+            ))}
+          </div>
+          <div className="px-3 py-2">
+            <div className="text-[8px] text-neutral-400 mb-1.5">Daily registrations</div>
+            <div className="flex items-end gap-0.5 h-8">
+              {[30,55,42,70,88,60,45,72,95,80,65,50,78,92,68].map((h,i) => (
+                <div key={i} className="flex-1 rounded-sm bg-va-red/20 relative overflow-hidden">
+                  <div className="absolute bottom-0 left-0 right-0 bg-va-red rounded-sm" style={{height:`${h}%`}}/>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="px-3 py-2 border-t border-neutral-100">
+            {[['Maria G.','Los Angeles, CA'],['James T.','Oakland, CA']].map(([n,l])=>(
+              <div key={n} className="flex justify-between items-center mb-1 last:mb-0">
+                <span className="text-[8px] font-medium text-black">{n}</span>
+                <span className="text-[7px] text-neutral-400">{l}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="mt-3 text-[10px] text-neutral-400 text-center">Upgrade to export full contact records &amp; sync to your CRM</div>
+    </div>
+  );
+  return (
+    <div className="bg-va-cream border border-neutral-100 rounded-xl p-7">
+      <div className="text-[11px] uppercase tracking-wider text-neutral-600 font-medium mb-3">They hear from you every election</div>
+      <div className="bg-white border border-neutral-100 rounded-xl p-4 flex gap-3 items-start mb-2.5">
+        <div className="w-9 h-9 rounded-lg bg-red-100 flex items-center justify-center flex-shrink-0 text-lg">&#x1F5F3;</div>
+        <div><div className="text-[13px] font-medium text-black">Primary election in 14 days</div><div className="text-xs text-neutral-600">Your polling place: Lincoln Community Center</div></div>
+      </div>
+      <div className="bg-white border border-neutral-100 rounded-xl p-4 flex gap-3 items-start mb-3">
+        <div className="w-9 h-9 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0 text-lg">&#x2705;</div>
+        <div><div className="text-[13px] font-medium text-black">Registered in California</div><div className="text-xs text-neutral-600">Confirmed via Secretary of State</div></div>
+      </div>
+      <span className="inline-block bg-neutral-100 rounded-full px-3 py-1 text-[11px] font-medium text-neutral-600">Reminders for life, on your brand</span>
+    </div>
+  );
+}
+
+function HowItWorks() {
+  const [active, setActive] = React.useState(0);
+  return (
+    <section id="how-it-works" className="py-12 md:py-24 bg-white border-b border-neutral-100">
+      <div className="max-w-[1100px] mx-auto px-4 md:px-16">
+        {/* Mobile: accordion steps */}
+        <div className="md:hidden">
+          <h2 className="text-[28px] font-medium tracking-tight leading-tight mb-3">How it works</h2>
+          <p className="text-[15px] text-neutral-600 leading-relaxed mb-6">Free voter tools on your site in minutes. No engineers, no contract, no catch.</p>
+          <div className="flex flex-col">
+            {STEPS.map((s,i) => (
+              <div key={s.n} className={`border-t border-neutral-100 ${i===STEPS.length-1?'border-b':''}`}>
+                <div onClick={()=>setActive(active===i?-1:i)} className="flex items-center gap-3 py-4 cursor-pointer">
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-medium flex-shrink-0 transition-colors ${active===i?'bg-va-red text-white':'bg-neutral-100 text-neutral-600'}`}>{s.n}</div>
+                  <div className="text-[16px] font-medium text-black">{s.h}</div>
+                </div>
+                {active===i && (
+                  <div className="pb-5">
+                    <div className="text-[14px] text-neutral-600 leading-relaxed mb-4 pl-11">{s.p}</div>
+                    <StepGraphic step={i}/>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Desktop: sticky two-column */}
+        <div className="hidden md:grid grid-cols-[1fr_1.2fr] gap-16 items-start">
+          <div className="sticky top-24">
+            <h2 className="text-[28px] md:text-[40px] font-medium tracking-tight leading-tight mb-3 md:mb-4">How it works</h2>
+            <p className="text-[15px] md:text-[17px] text-neutral-600 leading-relaxed mb-6 md:mb-8">Free voter tools on your site in minutes. No engineers, no contract, no catch.</p>
+            <div className="flex flex-col">
+              {STEPS.map((s,i) => (
+                <div key={s.n} onClick={()=>setActive(i)} className={`py-5 border-t border-neutral-100 cursor-pointer transition-all ${i===STEPS.length-1?'border-b':''} ${active===i?'py-6':''}`}>
+                  <div className="flex items-center gap-4">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-medium flex-shrink-0 transition-colors ${active===i?'bg-va-red text-white':'bg-neutral-100 text-neutral-600'}`}>{s.n}</div>
+                    <div className="text-[15px] md:text-[17px] font-medium text-black">{s.h}</div>
+                  </div>
+                  {active===i && <div className="pl-12 pt-3 text-[15px] text-neutral-600 leading-relaxed">{s.p}</div>}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="sticky top-24">
+            <StepGraphic step={active}/>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Who It's For (A style: tabbed panel) ── */
+const ORGS = [
+  {tab:'Campaigns',h:'Your website traffic is your best untapped voter file.',p:'VoteAmerica Plus turns site visitors into registered supporters. Full contact records ready for your CRM the same day.',details:['Full contact records: name, address, DOB, email, phone','Sync to NGP VAN, ActionNetwork, or any CRM','White-label to match your brand in minutes','Works alongside your existing digital program']},
+  {tab:'Nonprofits',h:'Your members want to vote. Make it easy.',p:'Research-backed tools on the platform they already use. Drive 2 to 8 percent measurable turnout lift without building anything.',details:['501(c)(3) and (c)(4) compliant. Nonpartisan by design','Lifetime election reminders for everyone who opts in','Integrates with EveryAction and Action Network','Proven turnout lift in randomized controlled trials']},
+  {tab:'Employers',h:'Civic engagement, zero engineering time.',p:'Add voter tools to your benefits portal, product, or internal comms. We handle SOC 2, HIPAA, and all compliance.',details:['Drop into any web property in minutes','Zero engineering review required','SOC 2 Type II and HIPAA certified','Free forever. No contract, no negotiation']},
+  {tab:'Media',h:'Turn every election story into action.',p:'Readers can register, verify, and plan their vote without leaving your page. Already live on major national newsrooms.',details:['Meets news-integrity and nonpartisan sourcing standards','Branded to match your publication','Optional civic engagement analytics per story','Lifetime reminders keep readers coming back']},
+];
+
+const QUOTES = {
+  Campaigns: [{q:'"We added 4,200 registered voters in our district in a single cycle. Setup took 20 minutes."',name:'Digital Director, U.S. House Campaign'}],
+  Nonprofits: [{q:'"Our members registered to vote right from our action alerts. No redirects, no drop-off."',name:'Civic Engagement Director, National Nonprofit'}],
+  Employers: [{q:'"Zero engineering time. HR added the tool to our benefits portal in an afternoon."',name:'Head of People, Fortune 500 Company'}],
+  Media: [{q:'"Readers can register without leaving our story. Engagement on those pages went up 18%."',name:'Audience Editor, National Newsroom'}],
+};
+
+function WhoFor() {
+  const [active, setActive] = React.useState(0);
+  const cur = ORGS[active];
+  const quotes = QUOTES[cur.tab];
+  return (
+    <section id="who-it-s-for" className="py-24 border-b border-neutral-100">
+      <div className="max-w-[1100px] mx-auto px-4 md:px-16">
+        <h2 className="text-[28px] md:text-[40px] font-medium tracking-tight leading-tight mb-3 md:mb-4">One toolkit. Every kind of organization.</h2>
+        <p className="text-[15px] md:text-[17px] text-neutral-600 leading-relaxed mb-6 md:mb-10 max-w-[480px]">Whether you run a campaign, an HR team, or a newsroom, the same tools serve your audience and your mission.</p>
+        <div className="flex gap-0 border-b border-neutral-100 mb-10 overflow-x-hidden">
+          {ORGS.map((o,i) => (
+            <button key={o.tab} onClick={()=>setActive(i)} className={`px-3 md:px-5 py-3 text-xs md:text-sm font-medium border-b-2 -mb-px transition-colors whitespace-nowrap ${active===i?'text-black border-va-red':'text-neutral-400 border-transparent hover:text-black'}`}>{o.tab}</button>
+          ))}
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+          <div>
+            <h3 className="text-[20px] md:text-[26px] font-medium text-black mb-3 tracking-tight">{cur.h}</h3>
+            <p className="text-base text-neutral-600 leading-relaxed mb-8">{cur.p}</p>
+            <div className="flex flex-col gap-4">
+              {quotes.map((qt, i) => (
+                <div key={i} className="border-l-4 border-va-red pl-4 py-1">
+                  <p className="text-[15px] text-neutral-700 leading-relaxed mb-2">{qt.q}</p>
+                  <p className="text-[12px] text-neutral-400 font-medium">{qt.name}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <ul className="space-y-0">
+            {cur.details.map((d,i) => (
+              <li key={i} className={`flex gap-3 items-start py-3.5 border-neutral-100 text-[15px] text-neutral-800 leading-snug ${i===0?'border-t':''} border-b`}>
+                <span className="w-4 h-4 rounded-full bg-va-red flex items-center justify-center flex-shrink-0 mt-0.5"><ChkIcon s={8}/></span>{d}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Pricing ── */
+function Pricing({onCta}) {
+  const [nonprofit, setNonprofit] = React.useState(false);
+  const features = [
+    {label:'All six voter tools, white-labeled', free:true, paid:true},
+    {label:'All 50 states and DC', free:true, paid:true},
+    {label:'Lifetime election reminders', free:true, paid:true},
+    {label:'No contract required', free:true, paid:true},
+    {label:'Full voter contact records', free:false, paid:true},
+    {label:'CSV export and CRM sync', free:false, paid:true},
+    {label:'Priority support', free:false, paid:true},
+  ];
+  const price = nonprofit ? '$999' : '$1,999';
+  return (
+    <section id="pricing" className="py-24 bg-white border-b border-neutral-100">
+      <div className="max-w-[900px] mx-auto px-4 md:px-16">
+        <h2 className="text-[28px] md:text-[40px] font-medium tracking-tight leading-tight mb-3 md:mb-4">Simple pricing.</h2>
+        <p className="text-[15px] md:text-[17px] text-neutral-600 leading-relaxed mb-8 md:mb-12 max-w-[560px]">Start free. Upgrade when you need voter contact data. Includes voter registration, registration verification, absentee ballot request, polling place locator, election reminders, and election calendar.</p>
+
+        {/* Mobile: stacked cards */}
+        <div className="md:hidden flex flex-col gap-4 mb-6">
+          <div className="rounded-xl border border-neutral-100 overflow-hidden">
+            <div className="bg-va-cream px-4 py-3 border-b border-neutral-100">
+              <div className="text-base font-medium text-black">Free</div>
+              <div className="text-xs text-neutral-500">$0 forever</div>
+            </div>
+            {features.map((f,i) => f.free && (
+              <div key={i} className="flex gap-3 items-center px-4 py-2.5 border-b border-neutral-100 last:border-0">
+                <span className="w-4 h-4 rounded-full bg-va-red flex items-center justify-center flex-shrink-0"><ChkIcon s={8}/></span>
+                <span className="text-sm text-neutral-600">{f.label}</span>
+              </div>
+            ))}
+            <div className="px-4 py-3">
+              <button onClick={onCta} className="bg-va-red text-white w-full py-2.5 rounded-md text-sm font-medium hover:bg-va-red-dark transition-colors">Sign up free</button>
+            </div>
+          </div>
+          <div className="rounded-xl border border-neutral-200 overflow-hidden">
+            <div className="bg-black px-4 py-3 border-b border-white/10 flex items-center justify-between">
+              <div>
+                <div className="text-base font-medium text-white">Paid</div>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-xs text-white/50">Nonprofit pricing</span>
+                  <button onClick={() => setNonprofit(n => !n)} className={`relative inline-flex h-4 w-8 items-center rounded-full transition-colors duration-200 ${nonprofit ? 'bg-va-red' : 'bg-white/20'}`}>
+                    <span className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform duration-200 ${nonprofit ? 'translate-x-4' : 'translate-x-1'}`}/>
+                  </button>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-lg font-medium text-white">{price}</div>
+                <div className="text-[10px] text-white/40">per month</div>
+              </div>
+            </div>
+            <div className="px-4 py-3 border-b border-neutral-100">
+              <div className="text-[11px] font-medium text-neutral-400 uppercase tracking-wide mb-2">Everything in Free, plus</div>
+              {features.filter(f=>!f.free).map((f,i) => (
+                <div key={i} className="flex gap-3 items-center py-2 border-b border-neutral-100 last:border-0">
+                  <span className="w-4 h-4 rounded-full bg-va-red flex items-center justify-center flex-shrink-0"><ChkIcon s={8}/></span>
+                  <span className="text-sm text-neutral-600">{f.label}</span>
+                </div>
+              ))}
+            </div>
+            <div className="px-4 py-3 bg-neutral-50">
+              <span className="text-sm text-neutral-500">Upgrade from free — contact us</span>
+            </div>
+          </div>
+        </div>
+        {/* Desktop: comparison table */}
+        <div className="hidden md:block rounded-2xl border border-neutral-100 overflow-hidden">
+          {/* Header */}
+          <div className="grid grid-cols-[1fr_140px_140px] bg-va-cream">
+            <div className="p-5"></div>
+            <div className="p-5 text-center border-l border-neutral-100">
+              <div className="text-lg font-medium text-black">Free</div>
+              <div className="text-xs text-neutral-600 mt-0.5">$0 forever</div>
+            </div>
+            <div className="p-5 text-center border-l border-neutral-100 bg-black text-white rounded-tr-2xl">
+              <div className="text-lg font-medium">Paid</div>
+              <div className="text-xs text-white/60 mt-0.5">Custom</div>
+            </div>
+          </div>
+          {features.map((f,i) => (
+            <div key={i} className="grid grid-cols-[1fr_140px_140px] border-t border-neutral-100">
+              <div className="p-4 px-5 text-sm text-neutral-600">{f.label}</div>
+              <div className="p-4 flex items-center justify-center border-l border-neutral-100">
+                {f.free ? <span className="w-5 h-5 rounded-full bg-va-red flex items-center justify-center"><ChkIcon s={10}/></span> : <span className="w-4 h-0.5 bg-neutral-200 rounded-full"/>}
+              </div>
+              <div className="p-4 flex items-center justify-center border-l border-neutral-100 bg-neutral-50">
+                <span className="w-5 h-5 rounded-full bg-va-red flex items-center justify-center"><ChkIcon s={10}/></span>
+              </div>
+            </div>
+          ))}
+          <div className="grid grid-cols-[1fr_140px_140px] border-t border-neutral-100 bg-va-cream">
+            <div className="p-5 flex items-center">
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-neutral-600">Nonprofit pricing</span>
+                <button onClick={() => setNonprofit(n => !n)} className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors duration-200 focus:outline-none ${nonprofit ? 'bg-va-red' : 'bg-neutral-300'}`}>
+                  <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform duration-200 ${nonprofit ? 'translate-x-4' : 'translate-x-1'}`}/>
+                </button>
+              </div>
+            </div>
+            <div className="p-5 flex items-center justify-center border-l border-neutral-100"><span className="text-sm text-neutral-400">—</span></div>
+            <div className="p-5 flex items-center justify-center border-l border-neutral-100 bg-neutral-50">
+              <div className="text-center">
+                <div className="text-[22px] font-medium text-black leading-none">{price}</div>
+                <div className="text-[11px] text-neutral-400 mt-1">per month</div>
+              </div>
+            </div>
+          </div>
+          <div className="grid grid-cols-[1fr_140px_140px] border-t border-neutral-100">
+            <div className="p-5"></div>
+            <div className="p-5 flex items-center justify-center border-l border-neutral-100">
+              <button onClick={onCta} className="bg-va-red text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-va-red-dark transition-colors w-full text-center">Sign up free <Arr/></button>
+            </div>
+            <div className="p-5 flex items-center justify-center border-l border-neutral-100 bg-neutral-50">
+              <span className="text-sm text-neutral-500">Upgrade from free</span>
+            </div>
+          </div>
+        </div>
+        <p className="text-center text-[13px] text-neutral-400 mt-5">Upgrade or downgrade at any time. Nonprofits receive preferred pricing.</p>
+      </div>
+    </section>
+  );
+}
+
+/* ── Security (more prominent) ── */
+function Security() {
+  const items = [
+    {icon: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2l8 3v7c0 5-3.5 8-8 10-4.5-2-8-5-8-10V5l8-3z"/></svg>, label:'SOC 2 Type II', sub:'Audited annually'},
+    {icon: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="10" r="6"/><path d="M9 15l-2 6 5-3 5 3-2-6"/></svg>, label:'HIPAA certified', sub:'Healthcare-grade compliance'},
+    {icon: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>, label:'Pen-tested annually', sub:'Third-party red team'},
+    {icon: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/></svg>, label:'Nonpartisan', sub:'Verified by external auditors'},
+  ];
+  return (
+    <div className="py-14 bg-white border-y border-neutral-100">
+      <div className="max-w-[1100px] mx-auto px-4 md:px-16">
+        <div className="text-center mb-8 md:mb-10">
+          <h2 className="text-[22px] md:text-[28px] font-medium tracking-tight text-black mb-2">Enterprise-grade security. Built for civic trust.</h2>
+          <p className="text-[15px] text-neutral-600">Audited, certified, and nonpartisan — so your legal and compliance teams can say yes fast.</p>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {items.map(x => (
+            <div key={x.label} className="flex gap-3 items-start">
+              <div className="w-9 h-9 rounded-lg bg-va-cream border border-neutral-100 flex items-center justify-center flex-shrink-0 text-neutral-800">{x.icon()}</div>
+              <div>
+                <div className="text-sm font-medium text-black">{x.label}</div>
+                <div className="text-xs text-neutral-600 mt-0.5">{x.sub}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Stats ── */
+function Counter({target}) {
+  const [val, setVal] = React.useState(0);
+  const ref = React.useRef();
+  React.useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        obs.disconnect();
+        const num = parseFloat(target.replace(/[^0-9.]/g,''));
+        const dur = 1200; const start = performance.now();
+        const tick = now => { const p=Math.min((now-start)/dur,1); const ease=1-Math.pow(1-p,3); setVal(Math.round(num*ease)); if(p<1) requestAnimationFrame(tick); };
+        requestAnimationFrame(tick);
+      }
+    },{threshold:0.5});
+    if (ref.current) obs.observe(ref.current);
+    return ()=>obs.disconnect();
+  },[target]);
+  const pfx = target.match(/^[^0-9]*/)?.[0]||'';
+  const sfx = target.match(/[^0-9.]+$/)?.[0]||'';
+  return <span ref={ref}>{pfx}{val}{sfx}</span>;
+}
+
+function Stats() {
+  return (
+    <section className="py-20 border-b border-neutral-100">
+      <div className="max-w-[1100px] mx-auto px-4 md:px-16 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
+        <div>
+          <h2 className="text-[26px] md:text-[36px] font-medium tracking-tight leading-tight mb-3">Built for democracy, not for profit.</h2>
+          <p className="text-[15px] md:text-[17px] text-neutral-600 leading-relaxed">VoteAmerica is a 501(c)(3) nonprofit. Every dollar from VoteAmerica Plus funds nonpartisan voter mobilization.</p>
+        </div>
+        <div className="grid grid-cols-2 border border-neutral-100 rounded-xl overflow-hidden">
+          {[['20M+','Voters reached since 2019'],['51','Jurisdictions covered'],['100+','Data points per jurisdiction'],['2\u20138%','Measurable turnout lift']].map(([n,l],i) => (
+            <div key={n} className={`p-6 bg-white ${i%2?'border-l border-neutral-100':''} ${i>=2?'border-t border-neutral-100':''}`}>
+              <div className="text-[36px] md:text-[44px] font-medium text-va-red leading-none tracking-tight"><Counter target={n}/></div>
+              <div className="text-[13px] text-neutral-600 mt-2 leading-snug">{l}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── FAQ ── */
+const QS = [
+  {q:'What voter tools are included?',a:'Six free tools: voter registration, registration verification, absentee ballot request, polling place locator, election reminders (SMS and email for life), and an election calendar. All work across all 50 states and DC.'},
+  {q:'Is the software really free?',a:'Yes. The tools are 100% free to embed forever. No setup fees, no contract, no per-voter pricing. Upgrade to Plus to export contact-level voter records.'},
+  {q:'How long does it take to set up?',a:'Under five minutes. Simple copy-paste. No engineering review, no onboarding call.'},
+  {q:'Can I white-label the tools?',a:'Yes. Customize colors, fonts, and branding. Your users never need to see the VoteAmerica name unless you want them to.'},
+  {q:'Is VoteAmerica partisan?',a:'No. VoteAmerica is a 501(c)(3) nonpartisan nonprofit. Verified by external auditors annually.'},
+  {q:'What integrations are available?',a:'Plus plans include EveryAction, Action Network, NGP VAN, DDx, TMC, Google BigQuery, and AWS Redshift. CSV export and API access also available.'},
+];
+
+function Faq() {
+  const [open, setOpen] = React.useState(null);
+  return (
+    <section id="faq" className="py-16 bg-white border-b border-neutral-100">
+      <div className="max-w-[1100px] mx-auto px-4 md:px-16">
+        <h2 className="text-[22px] md:text-[28px] font-medium tracking-tight mb-6 md:mb-8">Frequently asked questions</h2>
+        <div className="max-w-[760px] border-t border-neutral-100">
+          {QS.map((x,i) => (
+            <div key={i} className="border-b border-neutral-100">
+              <button onClick={()=>setOpen(open===i?null:i)} className="flex justify-between items-center w-full py-4 text-[15px] font-medium text-black text-left gap-4">
+                <span>{x.q}</span>
+                <span className={`flex-shrink-0 text-neutral-400 transition-transform duration-200 ${open===i?'rotate-45 !text-va-red':''}`}><PlusIcon s={16}/></span>
+              </button>
+              {open===i && <div className="pb-4 text-sm text-neutral-600 leading-relaxed max-w-[680px]">{x.a}</div>}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Final CTA (compact) ── */
+function FinalCta({onCta}) {
+  return (
+    <section className="py-10 bg-va-cream text-center border-b border-neutral-100">
+      <div className="max-w-[1100px] mx-auto px-4 md:px-16">
+        <h2 className="text-[clamp(20px,3vw,30px)] font-medium tracking-tight leading-tight text-black mb-2">Help your audience vote. It takes five minutes.</h2>
+        <p className="text-[15px] text-neutral-600 mb-5">Free forever. Nonpartisan by design.</p>
+        <button onClick={onCta} className="bg-va-red text-white px-6 py-2.5 rounded-md text-sm font-medium hover:bg-va-red-dark transition-colors inline-flex items-center gap-1.5">Sign up free <Arr/></button>
+      </div>
+    </section>
+  );
+}
+
+/* ── Footer (compact) ── */
+function Footer() {
+  return (
+    <footer className="bg-neutral-800 text-white py-8">
+      <div className="max-w-[1100px] mx-auto px-4 md:px-16">
+        <div className="flex justify-between items-start flex-wrap gap-8 pb-6 border-b border-white/10">
+          <div className="flex items-center">
+            <img src="./assets/VoteAmerica_Logo.svg" alt="VoteAmerica" className="h-7 invert"/>
+            <span className="text-sm font-medium text-va-red ml-1">Plus</span>
+          </div>
+          <div className="flex gap-6 md:gap-10 flex-wrap">
+            {[
+              {h:'Product',links:['Voter tools','Data and CRM','Integrations']},
+              {h:'Resources',links:['Docs','API','Status']},
+              {h:'Company',links:['About','Impact','Privacy']},
+            ].map(col => (
+              <div key={col.h}>
+                <h4 className="text-[11px] uppercase tracking-widest text-white/30 font-medium mb-2">{col.h}</h4>
+                {col.links.map(l => <a key={l} className="block text-sm text-white/60 hover:text-white cursor-pointer mb-1">{l}</a>)}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="pt-4 flex justify-between items-center flex-wrap gap-3 text-xs text-white/30">
+          <span>&#169; 2026 VoteAmerica, LLC</span>
+          <span>SOC 2 · HIPAA · Nonpartisan</span>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/* ── Demo Modal ── */
+function DemoModal({onClose}) {
+  React.useEffect(() => {
+    if (!document.getElementById('va-embed-script')) { const s=document.createElement('script');s.src='https://cdn.voteamerica.org/embed/tools.js';s.async=true;s.id='va-embed-script';document.head.appendChild(s); }
+    document.body.style.overflow='hidden';
+    return()=>{document.body.style.overflow=''};
+  },[]);
+  return (
+    <div className="fixed inset-0 z-[200] bg-black/60 backdrop-blur-sm flex items-center justify-center p-6" onClick={onClose}>
+      <div className="bg-white rounded-2xl p-8 max-w-[520px] w-full relative max-h-[90vh] overflow-y-auto" onClick={e=>e.stopPropagation()}>
+        <button onClick={onClose} className="absolute top-4 right-4 text-neutral-400 hover:text-black text-lg leading-none">&#10005;</button>
+        <p className="text-[11px] uppercase tracking-widest text-va-red font-medium mb-3">Live demo</p>
+        <h3 className="text-xl font-medium text-black mb-5">Try the voter verification tool</h3>
+        <div className="voteamerica-embed" data-subscriber="tab-for-a-cause" data-tool="verify"></div>
+      </div>
+    </div>
+  );
+}
+
+/* ── App ── */
+function App() {
+  const [showDemo, setShowDemo] = React.useState(false);
+  const onCta = () => setShowDemo(true);
+  return (
+    <>
+      <Nav onCta={onCta}/>
+      {showDemo && <DemoModal onClose={()=>setShowDemo(false)}/>}
+      <Hero onCta={onCta}/>
+      <Logos/>
+      <HowItWorks/>
+      <WhoFor/>
+      <Pricing onCta={onCta}/>
+      <Security/>
+      <Stats/>
+      <Faq/>
+      <FinalCta onCta={onCta}/>
+      <Footer/>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
