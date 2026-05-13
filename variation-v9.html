@@ -263,16 +263,18 @@ function PartnerLogo({partner, visible, idx}) {
 }
 
 function Logos() {
-  // showLabel=true for partners whose logo file is just an icon/mark with no embedded company name
+  // All wordmark-style logos (company name embedded in the artwork) — no captions needed
   const partners = [
-    {name:'Action Network',  color:'#EF4135', file: 'action-network.svg',  showLabel: true},
-    {name:'EveryAction',     color:'#005CA9', file: 'everyaction.webp', showLabel: true},
-    {name:'NGP VAN',         color:'#0066A1', file: 'ngp-van.png',         showLabel: false},
-    {name:'CTA Hopper',      color:'#1A1A1A', file: 'cta-hopper.webp',     showLabel: false},
-    {name:'DDx',             color:'#1A1A1A', file: 'ddx.webp',             showLabel: false},
-    {name:'TMC',             color:'#1A1A1A', file: 'tmc.webp',            showLabel: false, invert: true},
-    {name:'AWS Redshift',    color:'#FF9900', file: 'aws-redshift.svg',    showLabel: true},
-    {name:'Google BigQuery', color:'#4285F4', file: 'google-bigquery.webp', showLabel: true},
+    {name:'ATTN:',                        color:'#1A1A1A', file: 'attn.png',          showLabel: false},
+    {name:'Black Lives Matter',           color:'#FFCC00', file: 'blm.png',           showLabel: false},
+    {name:'Change.org',                   color:'#EF6121', file: 'change-org.png',    showLabel: false},
+    {name:'Countable',                    color:'#C8102E', file: 'countable.png',     showLabel: false},
+    {name:'Credit Karma',                 color:'#00B14F', file: 'credit-karma.png',  showLabel: false},
+    {name:'League of Conservation Voters',color:'#1F803C', file: 'lcv.png',           showLabel: false},
+    {name:'Everytown',                    color:'#2E5BAE', file: 'everytown.png',     showLabel: false},
+    {name:'GLAAD',                        color:'#3DA1D5', file: 'glaad.png',         showLabel: false},
+    {name:'Gusto',                        color:'#FF6B57', file: 'gusto.png',         showLabel: false},
+    {name:'Healthline',                   color:'#1A1A1A', file: 'healthline.png',    showLabel: false},
   ];
   const ref = React.useRef();
   const [visible, setVisible] = React.useState(false);
@@ -284,8 +286,8 @@ function Logos() {
   return (
     <div className="py-12 md:py-14 bg-white border-y border-neutral-100" ref={ref}>
       <div className="max-w-[1100px] mx-auto px-4 md:px-16">
-        <div className="text-center text-[11px] text-neutral-400 uppercase tracking-widest font-medium mb-8">Integrates with</div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-8 gap-x-8 md:gap-x-12 items-center justify-items-center">
+        <div className="text-center text-[11px] text-neutral-400 uppercase tracking-widest font-medium mb-8">Featured customers</div>
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-y-8 gap-x-8 md:gap-x-10 items-center justify-items-center">
           {partners.map((p, i) => (
             <PartnerLogo key={p.name} partner={p} visible={visible} idx={i}/>
           ))}
