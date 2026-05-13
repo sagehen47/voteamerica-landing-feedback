@@ -33,6 +33,10 @@ tailwind.config = {
 .partner-logo:hover{color:var(--brand)}
 .partner-img{max-height:32px;width:auto;object-fit:contain;filter:grayscale(100%) opacity(0.55);transition:filter 0.25s ease}
 .partner-img:hover{filter:grayscale(0%) opacity(1)}
+.partner-img-icon{max-height:44px;width:auto;object-fit:contain;filter:grayscale(100%) opacity(0.55);transition:filter 0.25s ease}
+.partner-grouped:hover .partner-img-icon{filter:grayscale(0%) opacity(1)}
+.partner-grouped:hover .partner-caption{color:var(--brand)}
+.partner-caption{transition:color 0.25s ease}
 </style>
 <script src="https://simplecommenter.com/js/comments.min.js?id=sc_c3f61dbc4c667b21" defer></script>
 </head>
@@ -224,6 +228,20 @@ function PartnerLogo({partner, visible, idx}) {
   const showImg = partner.file && !imgFailed;
   const style = {'--brand': partner.color, opacity: visible ? 1 : 0, animationDelay: `${idx * 60}ms`, animationPlayState: visible ? 'running' : 'paused'};
   if (showImg) {
+    // Icon-only logos (no embedded company name) get a caption below
+    if (partner.showLabel) {
+      return (
+        <div className="partner-grouped logo-animate flex flex-col items-center gap-2" style={style}>
+          <img
+            src={`./assets/partners/${partner.file}`}
+            alt={partner.name}
+            onError={() => setImgFailed(true)}
+            className="partner-img-icon"
+          />
+          <span className="partner-caption text-[13px] font-medium text-neutral-500 whitespace-nowrap">{partner.name}</span>
+        </div>
+      );
+    }
     return (
       <img
         src={`./assets/partners/${partner.file}`}
@@ -243,15 +261,16 @@ function PartnerLogo({partner, visible, idx}) {
 }
 
 function Logos() {
+  // showLabel=true for partners whose logo file is just an icon/mark with no embedded company name
   const partners = [
-    {name:'Action Network',  color:'#EF4135', file: 'action-network.svg'},
+    {name:'Action Network',  color:'#EF4135', file: 'action-network.svg',  showLabel: true},
     {name:'EveryAction',     color:'#005CA9', file: null},
-    {name:'NGP VAN',         color:'#0066A1', file: 'ngp-van.png'},
-    {name:'CTA Hopper',      color:'#1A1A1A', file: 'cta-hopper.webp'},
+    {name:'NGP VAN',         color:'#0066A1', file: 'ngp-van.png',         showLabel: false},
+    {name:'CTA Hopper',      color:'#1A1A1A', file: 'cta-hopper.webp',     showLabel: false},
     {name:'DDx',             color:'#1A1A1A', file: null},
-    {name:'TMC',             color:'#1A1A1A', file: 'tmc.png'},
-    {name:'AWS Redshift',    color:'#FF9900', file: 'aws-redshift.svg'},
-    {name:'Google BigQuery', color:'#4285F4', file: 'google-bigquery.svg'},
+    {name:'TMC',             color:'#1A1A1A', file: 'tmc.png',             showLabel: false},
+    {name:'AWS Redshift',    color:'#FF9900', file: 'aws-redshift.svg',    showLabel: true},
+    {name:'Google BigQuery', color:'#4285F4', file: 'google-bigquery.svg', showLabel: true},
   ];
   const ref = React.useRef();
   const [visible, setVisible] = React.useState(false);
