@@ -31,6 +31,8 @@ tailwind.config = {
 @keyframes logoFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 .logo-animate{animation:logoFadeUp 0.55s cubic-bezier(0.22,1,0.36,1) both}
 .partner-logo:hover{color:var(--brand)}
+.partner-img{max-height:32px;width:auto;object-fit:contain;filter:grayscale(100%) opacity(0.55);transition:filter 0.25s ease}
+.partner-img:hover{filter:grayscale(0%) opacity(1)}
 </style>
 <script src="https://simplecommenter.com/js/comments.min.js?id=sc_c3f61dbc4c667b21" defer></script>
 </head>
@@ -216,16 +218,40 @@ function Hero({onCta}) {
 }
 
 /* ── Logos ── */
+function PartnerLogo({partner, visible, idx}) {
+  // Try to render the image; on error, fall back to styled wordmark
+  const [imgFailed, setImgFailed] = React.useState(false);
+  const showImg = partner.file && !imgFailed;
+  const style = {'--brand': partner.color, opacity: visible ? 1 : 0, animationDelay: `${idx * 60}ms`, animationPlayState: visible ? 'running' : 'paused'};
+  if (showImg) {
+    return (
+      <img
+        src={`./assets/partners/${partner.file}`}
+        alt={partner.name}
+        onError={() => setImgFailed(true)}
+        className="partner-img logo-animate"
+        style={style}
+      />
+    );
+  }
+  return (
+    <div
+      className="partner-logo logo-animate text-base md:text-lg font-semibold tracking-tight whitespace-nowrap text-neutral-400 transition-colors duration-200 cursor-default"
+      style={style}
+    >{partner.name}</div>
+  );
+}
+
 function Logos() {
   const partners = [
-    {name:'Action Network', color:'#EF4135'},
-    {name:'EveryAction',    color:'#005CA9'},
-    {name:'NGP VAN',        color:'#0066A1'},
-    {name:'CTA Hopper',     color:'#1A1A1A'},
-    {name:'DDx',            color:'#1A1A1A'},
-    {name:'TMC',            color:'#1A1A1A'},
-    {name:'AWS Redshift',   color:'#FF9900'},
-    {name:'Google BigQuery',color:'#4285F4'},
+    {name:'Action Network',  color:'#EF4135', file: 'action-network.svg'},
+    {name:'EveryAction',     color:'#005CA9', file: null},
+    {name:'NGP VAN',         color:'#0066A1', file: 'ngp-van.png'},
+    {name:'CTA Hopper',      color:'#1A1A1A', file: 'cta-hopper.webp'},
+    {name:'DDx',             color:'#1A1A1A', file: null},
+    {name:'TMC',             color:'#1A1A1A', file: null},
+    {name:'AWS Redshift',    color:'#FF9900', file: null},
+    {name:'Google BigQuery', color:'#4285F4', file: null},
   ];
   const ref = React.useRef();
   const [visible, setVisible] = React.useState(false);
@@ -238,12 +264,9 @@ function Logos() {
     <div className="py-12 md:py-14 bg-white border-y border-neutral-100" ref={ref}>
       <div className="max-w-[1100px] mx-auto px-4 md:px-16">
         <div className="text-center text-[11px] text-neutral-400 uppercase tracking-widest font-medium mb-8">Integrates with</div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-6 gap-x-6 md:gap-x-10 items-center justify-items-center">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-8 gap-x-8 md:gap-x-12 items-center justify-items-center">
           {partners.map((p, i) => (
-            <div key={p.name}
-              className="partner-logo logo-animate text-base md:text-lg font-semibold tracking-tight whitespace-nowrap text-neutral-400 transition-colors duration-200 cursor-default"
-              style={{'--brand': p.color, opacity: visible ? 1 : 0, animationDelay: `${i * 60}ms`, animationPlayState: visible ? 'running' : 'paused'}}
-            >{p.name}</div>
+            <PartnerLogo key={p.name} partner={p} visible={visible} idx={i}/>
           ))}
         </div>
       </div>
