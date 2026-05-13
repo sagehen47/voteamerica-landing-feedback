@@ -33,6 +33,8 @@ tailwind.config = {
 .partner-logo:hover{color:var(--brand)}
 .partner-img{max-height:48px;max-width:180px;width:auto;object-fit:contain;filter:grayscale(100%) opacity(0.55);transition:filter 0.25s ease}
 .partner-img:hover{filter:grayscale(0%) opacity(1)}
+.partner-img.invert{filter:grayscale(100%) opacity(0.55) invert(1)}
+.partner-img.invert:hover{filter:grayscale(0%) opacity(1) invert(1)}
 .partner-img-icon{max-height:44px;width:auto;object-fit:contain;filter:grayscale(100%) opacity(0.55);transition:filter 0.25s ease}
 .partner-grouped:hover .partner-img-icon{filter:grayscale(0%) opacity(1)}
 .partner-grouped:hover .partner-caption{color:var(--brand)}
@@ -247,7 +249,7 @@ function PartnerLogo({partner, visible, idx}) {
         src={`./assets/partners/${partner.file}`}
         alt={partner.name}
         onError={() => setImgFailed(true)}
-        className="partner-img logo-animate"
+        className={`partner-img logo-animate ${partner.invert ? 'invert' : ''}`}
         style={style}
       />
     );
@@ -268,7 +270,7 @@ function Logos() {
     {name:'NGP VAN',         color:'#0066A1', file: 'ngp-van.png',         showLabel: false},
     {name:'CTA Hopper',      color:'#1A1A1A', file: 'cta-hopper.webp',     showLabel: false},
     {name:'DDx',             color:'#1A1A1A', file: 'ddx.webp',             showLabel: false},
-    {name:'TMC',             color:'#1A1A1A', file: 'tmc.webp',            showLabel: false},
+    {name:'TMC',             color:'#1A1A1A', file: 'tmc.webp',            showLabel: false, invert: true},
     {name:'AWS Redshift',    color:'#FF9900', file: 'aws-redshift.svg',    showLabel: true},
     {name:'Google BigQuery', color:'#4285F4', file: 'google-bigquery.webp', showLabel: true},
   ];
