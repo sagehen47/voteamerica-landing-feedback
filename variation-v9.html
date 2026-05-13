@@ -334,14 +334,9 @@ function ToolIconRow({size=20, columns='grid-cols-4 md:grid-cols-6 lg:grid-cols-
 
 function StepGraphic({step}) {
   if (step === 0) return (
-    <div className="bg-va-cream border border-neutral-100 rounded-xl p-7">
-      <div className="text-[11px] uppercase tracking-wider text-neutral-600 font-medium mb-3">Copy this onto your site</div>
-      <div className="bg-[#1a1a2e] text-[#e2e8f0] rounded-lg p-4 font-mono text-xs leading-relaxed">
-        <span className="text-va-red">&lt;script</span> <span className="text-blue-300">src</span>=<span className="text-green-300">"cdn.voteamerica.org/embed/tools.js"</span><span className="text-va-red">&gt;&lt;/script&gt;</span><br/>
-        <span className="text-va-red">&lt;div</span> <span className="text-blue-300">class</span>=<span className="text-green-300">"voteamerica-embed"</span><br/>
-        &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-blue-300">data-tool</span>=<span className="text-green-300">"register"</span><span className="text-va-red">&gt;&lt;/div&gt;</span>
-      </div>
-      <div className="mt-3 text-xs text-neutral-400">No backend needed.</div>
+    <div className="bg-va-cream border border-neutral-100 rounded-xl p-3 md:p-5">
+      <div className="text-[11px] uppercase tracking-wider text-neutral-600 font-medium mb-3 px-2">Drop a ready-made link into your channels</div>
+      <img src="./uploads/MayLynnBallotRequest.gif" alt="A user moving through the VoteAmerica embed flow" className="w-full max-w-[300px] mx-auto rounded-lg block" loading="lazy"/>
     </div>
   );
   if (step === 1) return (
