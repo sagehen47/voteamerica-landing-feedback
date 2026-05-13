@@ -30,6 +30,7 @@ tailwind.config = {
 .bounce-arrow{animation:bounce-arrow 1.5s infinite}
 @keyframes logoFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 .logo-animate{animation:logoFadeUp 0.55s cubic-bezier(0.22,1,0.36,1) both}
+.partner-logo:hover{color:var(--brand)}
 </style>
 <script src="https://simplecommenter.com/js/comments.min.js?id=sc_c3f61dbc4c667b21" defer></script>
 </head>
@@ -216,7 +217,16 @@ function Hero({onCta}) {
 
 /* ── Logos ── */
 function Logos() {
-  const orgs = ['Action Network','EveryAction','NGP VAN','CTA Hopper','DDx','TMC','AWS Redshift','Google BigQuery'];
+  const partners = [
+    {name:'Action Network', color:'#EF4135'},
+    {name:'EveryAction',    color:'#005CA9'},
+    {name:'NGP VAN',        color:'#0066A1'},
+    {name:'CTA Hopper',     color:'#1A1A1A'},
+    {name:'DDx',            color:'#1A1A1A'},
+    {name:'TMC',            color:'#1A1A1A'},
+    {name:'AWS Redshift',   color:'#FF9900'},
+    {name:'Google BigQuery',color:'#4285F4'},
+  ];
   const ref = React.useRef();
   const [visible, setVisible] = React.useState(false);
   React.useEffect(() => {
@@ -225,15 +235,15 @@ function Logos() {
     return () => obs.disconnect();
   }, []);
   return (
-    <div className="py-10 bg-white border-y border-neutral-100" ref={ref}>
+    <div className="py-12 md:py-14 bg-white border-y border-neutral-100" ref={ref}>
       <div className="max-w-[1100px] mx-auto px-4 md:px-16">
-        <div className="text-center text-[11px] text-neutral-400 uppercase tracking-widest font-medium mb-5">Trusted by 250+ organizations</div>
-        <div className="flex justify-center gap-2 flex-wrap">
-          {orgs.map((o, i) => (
-            <div key={o}
-              className={`px-5 py-2.5 bg-va-cream border border-neutral-100 rounded-lg text-sm font-medium text-black hover:border-va-red transition-colors logo-animate`}
-              style={{opacity: visible ? 1 : 0, animationDelay: `${i * 60}ms`, animationPlayState: visible ? 'running' : 'paused'}}
-            >{o}</div>
+        <div className="text-center text-[11px] text-neutral-400 uppercase tracking-widest font-medium mb-8">Integrates with</div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-6 gap-x-6 md:gap-x-10 items-center justify-items-center">
+          {partners.map((p, i) => (
+            <div key={p.name}
+              className="partner-logo logo-animate text-base md:text-lg font-semibold tracking-tight whitespace-nowrap text-neutral-400 transition-colors duration-200 cursor-default"
+              style={{'--brand': p.color, opacity: visible ? 1 : 0, animationDelay: `${i * 60}ms`, animationPlayState: visible ? 'running' : 'paused'}}
+            >{p.name}</div>
           ))}
         </div>
       </div>
