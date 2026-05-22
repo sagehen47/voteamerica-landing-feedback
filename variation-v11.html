@@ -300,7 +300,7 @@ function Logos() {
 /* ── How It Works (B style: clickable steps + graphics) ── */
 const STEPS = [
   {n:'01',h:'Set up in minutes',p:'Drop a ready-made, trackable, custom link into your texts and emails, or copy-paste a line of code onto your site. No developers needed.'},
-  {n:'02',h:'Your audience takes action',p:'Your audience can check their status, request an absentee ballot, or find their polling place, prompted by you. Choose from 9 tools.'},
+  {n:'02',h:'Your audience takes action',p:'Your audience can check their status, request an absentee ballot, or find their polling place, prompted by you. Choose from multiple tools.'},
   {n:'03',h:'Track your impact in real time',p:'Track activity from your links in real time, including who\'s taking action and audience demographics. Upgrade to unlock opted-in contact information and sync supporters directly to NGP VAN, ActionNetwork, and more.'},
   {n:'04',h:'Lifetime election reminders built in',p:'Every person who takes action gets nonpartisan SMS and email election reminders from VoteAmerica. One sign-up turns into turnout, every cycle, with no extra lift from your team.'},
 ];
@@ -415,7 +415,7 @@ function StepGraphic({step}) {
   return (
     <div className="bg-va-cream border border-neutral-100 rounded-xl p-3 md:p-5">
       <div className="text-[11px] uppercase tracking-wider text-neutral-600 font-medium mb-3 px-2">A real VoteAmerica election reminder text</div>
-      <img src="./uploads/step04-reminders.png" alt="An example SMS election reminder sent by VoteAmerica" className="w-full max-w-[440px] mx-auto rounded-lg block" loading="lazy"/>
+      <img src="./uploads/step04-reminders.png" alt="An example SMS election reminder sent by VoteAmerica" className="w-full max-w-[560px] mx-auto rounded-lg block" loading="lazy"/>
     </div>
   );
 }
@@ -495,12 +495,14 @@ const ORGS = [
   {tab:'Media',h:'Turn every election story into action.',p:'When a story moves a reader to act, they can register and plan their vote on the spot.',details:['Meets news-integrity and nonpartisan sourcing standards','Lives inline in stories, newsletters, and homepages','Optional acquisition and analytics (with upgrade)','Lifetime reminders keep readers engaged in elections']},
 ];
 
+// Per client v10 comment #85: testimonial quotes pulled across every sub-tab
+// until Brenna/Abrams or real customer quotes are ready (mirrors v9 comment #76).
 const QUOTES = {
-  Campaigns: [{q:'"We added 4,200 registered voters in our district in a single cycle. Setup took 20 minutes."',name:'Digital Director, U.S. House Campaign'}],
-  Nonprofits: [{q:'"Our members registered to vote right from our action alerts. No redirects, no drop-off."',name:'Civic Engagement Director, National Nonprofit'}],
-  Employers: [{q:'"Zero engineering time. HR added the tool to our benefits portal in an afternoon."',name:'Head of People, Fortune 500 Company'}],
+  Campaigns: [],
+  Nonprofits: [],
+  Employers: [],
   Educators: [],
-  Media: [{q:'"Readers can register without leaving our story. Engagement on those pages went up 18%."',name:'Audience Editor, National Newsroom'}],
+  Media: [],
 };
 
 function WhoFor() {
@@ -624,11 +626,9 @@ function Pricing({onCta}) {
             <div className="p-5"></div>
             <div className="p-5 text-center border-l border-neutral-100">
               <div className="text-lg font-medium text-black">Silver</div>
-              <div className="text-[13px] text-neutral-500 mt-0.5">$0 forever</div>
             </div>
             <div className="p-5 text-center border-l border-neutral-100 bg-black text-white rounded-tr-2xl">
               <div className="text-lg font-medium">Gold</div>
-              <div className="text-[13px] text-white/60 mt-0.5">{price} per month</div>
             </div>
           </div>
           {/* Feature rows */}
@@ -757,7 +757,7 @@ function Stats() {
 
 /* ── FAQ ── */
 const QS = [
-  {q:'What voter tools are included?',a:'VoteAmerica powers 9 voter engagement tools, including: Check your registration status, Register to vote, Request your absentee or mail ballot, Find upcoming elections, Pre-register to vote (ages 13–17), Sign up for election reminders, Sign up for permanent absentee voting, Find out where to vote, and Contact your local election office.'},
+  {q:'What voter tools are included?',a:'VoteAmerica powers multiple voter engagement tools, including: Check your registration status, Register to vote, Request your absentee or mail ballot, Find upcoming elections, Pre-register to vote (ages 13–17), Sign up for election reminders, Sign up for permanent absentee voting, Find out where to vote, and Contact your local election office.'},
   {q:'Is the software really free?',a:'Yes. VoteAmerica’s core voter tools are free forever — including shareable links, embeddable tools, engagement analytics, demographic breakdowns, and secure mobile-friendly experiences. There are no setup fees, contracts, or per-voter charges. Upgrade to Gold when you need lead acquisition features like SMS opt-ins, contact-level data exports, integrations, advanced tracking, and customization.'},
   {q:'How fast can we be live?',a:'You can get started for free in just a few minutes.'},
   {q:'What data does the software capture?',a:'The tools capture demographic information for each voter 18 years old and older, including first and last name, home address and mailing address, date of birth, email, phone number, and contact opt-in info. This can be exported by subscribers at any time as a standard CSV file for import into their systems and matched to their voter files.'},
@@ -813,9 +813,9 @@ function Footer() {
           </div>
           <div className="flex gap-6 md:gap-10 flex-wrap">
             {[
-              {h:'Product',links:['The six tools','Data and CRM','Integrations']},
+              // Product + Company columns removed per v10 comments #90, #92.
+              // Emily to provide a finalized footer link map (v10 #91) before next iteration.
               {h:'Resources',links:['Acceptable use policy','Developer documentation','Customer support documentation','Privacy policy','Status page','Security trust report','Terms of service']},
-              {h:'Company',links:['About','Impact','Privacy']},
             ].map(col => (
               <div key={col.h}>
                 <h4 className="text-[11px] uppercase tracking-widest text-white/30 font-medium mb-2">{col.h}</h4>
@@ -864,7 +864,7 @@ function App() {
       <Nav onCta={onCta}/>
       {showDemo && <DemoModal onClose={()=>setShowDemo(false)}/>}
       <Hero onCta={onCta}/>
-      <Logos/>
+      {/* <Logos/> hidden per client v10 comment #81 — Emily to confirm featured-customer list before re-enabling */}
       <HowItWorks/>
       <WhoFor/>
       <Pricing onCta={onCta}/>
